@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LetterBordering", "LetterBordering\LetterBordering.csproj", "{9C12C572-1C1E-4D05-B4BA-2266F7CDE431}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{DE545B4F-3704-4338-BA93-CC5E87807D7E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9C12C572-1C1E-4D05-B4BA-2266F7CDE431}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C12C572-1C1E-4D05-B4BA-2266F7CDE431}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C12C572-1C1E-4D05-B4BA-2266F7CDE431}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C12C572-1C1E-4D05-B4BA-2266F7CDE431}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE545B4F-3704-4338-BA93-CC5E87807D7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE545B4F-3704-4338-BA93-CC5E87807D7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE545B4F-3704-4338-BA93-CC5E87807D7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE545B4F-3704-4338-BA93-CC5E87807D7E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {64CC33E2-44C4-425F-A45F-155F1E9E9313}
+	EndGlobalSection
+EndGlobal
