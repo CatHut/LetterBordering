@@ -24,7 +24,8 @@ namespace LetterBordering
         public int FontSize;
         public bool Bold;
         public bool Italic;
-        Color BaseColor;
+        public SerializableColor BaseColor;
+        public bool Centering;
         public string Text;
 
 
@@ -45,10 +46,18 @@ namespace LetterBordering
             FontName = "Arial";
             FontSize = 36;
             Text = "";
+            BaseColor = new SerializableColor(System.Drawing.Color.White);
             Bold = false;
             Italic = false;
+            Centering = false;
 
             DecorationDic = new SerializableSortedDictionary<int, DecorationInfo>();
+            //DecorationDic[0] = new DecorationInfo();
+            //DecorationDic[0].Color = Color.Green;
+            //DecorationDic[0].Thick = 10;
+            //DecorationDic[1] = new DecorationInfo();
+            //DecorationDic[1].Color = Color.Black;
+            //DecorationDic[1].Thick = 10;
         }
 
     }

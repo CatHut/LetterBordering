@@ -115,7 +115,7 @@ namespace LetterBordering
             Size textSize = ImageCommon.MeasureString(text, font);
 
             // 画像のサイズを決める（余白を含む）
-            int margin = 0 + outline1Width + outline2Width;
+            int margin = 10 + outline1Width + outline2Width;
             int width = Math.Max(1, textSize.Width + margin * 2);
             int height = Math.Max(1, textSize.Height + margin * 2);
 
@@ -133,7 +133,8 @@ namespace LetterBordering
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
 
             // 文字列の描画位置を決める
-            PointF point = new PointF(margin, margin);
+            //Rectangle rect = new Rectangle(0, 0, width, height);
+            Point rect = new Point(margin, margin);
 
             // GraphicsPathオブジェクトを作成する
             GraphicsPath path = new GraphicsPath();
@@ -144,17 +145,24 @@ namespace LetterBordering
 
             //パスを作成する
             // テキストの輪郭を追加する
-            path.AddString(text, font.FontFamily, (int)font.Style, font.Size, point, StringFormat.GenericDefault);
-            path1.AddString(text, font.FontFamily, (int)font.Style, font.Size, point, StringFormat.GenericDefault);
+            var sf = new StringFormat();
+            if (textInfo.Centering)
+            {
+                sf.Alignment = StringAlignment.Center;
+                sf.LineAlignment = StringAlignment.Center;
+            }
+
+            path.AddString(text, font.FontFamily, (int)font.Style, font.Size, rect, sf);
+            path1.AddString(text, font.FontFamily, (int)font.Style, font.Size, rect, sf);
 
             //ペンを作成する
             // 縁取り２ペンを作成する
-            Pen pen2 = new Pen(outline2Color, outline2Width);
+            Pen pen2 = new Pen(outline2Color.ToColor(), outline2Width);
             PushDisporsable(pen2);
             pen2.LineJoin = LineJoin.Round;
 
             // 縁取り１ペンを作成する
-            Pen pen1 = new Pen(outline1Color, outline1Width);
+            Pen pen1 = new Pen(outline1Color.ToColor(), outline1Width);
             PushDisporsable(pen1);
             pen1.LineJoin = LineJoin.Round;
 
@@ -168,21 +176,21 @@ namespace LetterBordering
             //描画する
             if (outline2Width > 0)
             {
-                Brush brush2 = new SolidBrush(Color.Blue);
+                Brush brush2 = new SolidBrush(outline2Color.ToColor());
                 g.FillPath(brush2, path2);
                 brush2.Dispose();
             }
 
             if (outline1Width > 0)
             {
-                Brush brush1 = new SolidBrush(Color.Red);
+                Brush brush1 = new SolidBrush(outline1Color.ToColor());
                 g.FillPath(brush1, path1);
                 brush1.Dispose();
             }
 
 
             // テキストを塗りつぶす
-            Brush brush = new SolidBrush(Color.White);
+            Brush brush = new SolidBrush(textInfo.BaseColor.ToColor());
             PushDisporsable(brush);
             g.FillPath(brush, path);
 
@@ -270,10 +278,9 @@ namespace LetterBordering
             }
             else
             {
-                // 画像の端から1ピクセル内側に矩形を描画する
+                //描画先を矩形として表示
                 g.DrawRectangle(pen, (Rectangle)destRect);
             }
-
 
 
             //前回のBitmapオブジェクトをDisposeする
@@ -282,8 +289,21 @@ namespace LetterBordering
                 pictureBox_Preview.Image.Dispose();
             }
 
-            //ピクチャボックスに設定
-            pictureBox_Preview.Image = bmp;
+            if (bmp.Width <= pictureBox_Preview.Width && bmp.Height <= pictureBox_Preview.Height)
+            {
+                // B is smaller than or equal to A, show it as is
+                pictureBox_Preview.Image = bmp;
+            }
+            else
+            {
+                // B is larger than A, resize it to fit within A
+                float scale = Math.Min((float)pictureBox_Preview.Width / bmp.Width, (float)pictureBox_Preview.Height / bmp.Height);
+                int newWidth = (int)(bmp.Width * scale);
+                int newHeight = (int)(bmp.Height * scale);
+                Bitmap resizedB = new Bitmap(bmp, new Size(newWidth, newHeight));
+                bmp.Dispose();
+                pictureBox_Preview.Image = resizedB;
+            }
 
             ReleaseDisposable();
 
@@ -354,12 +374,15 @@ namespace LetterBordering
 
             var idx = PM.AsProject.Settings.SelectedTextIndex;
 
+            var textInfo = PM.AsProject.Settings.TextInfoDic[idx];
             PM.AsProject.Settings.TextInfoDic[idx] = new TextInfo();
             PM.AsProject.Settings.TextInfoDic[idx].Text = textBox_InputText.Text;
             PM.AsProject.Settings.TextInfoDic[idx].FontName = comboBox_Font.Text;
             PM.AsProject.Settings.TextInfoDic[idx].FontSize = (int)numericUpDown_FontSize.Value;
             PM.AsProject.Settings.TextInfoDic[idx].Bold = checkBox_Bold.Checked;
             PM.AsProject.Settings.TextInfoDic[idx].Italic = checkBox_Italic.Checked;
+            PM.AsProject.Settings.TextInfoDic[idx].Centering = checkBox_Centering.Checked;
+            PM.AsProject.Settings.TextInfoDic[idx].BaseColor = new SerializableColor(button_Color00.BackColor);
 
             PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX = (int)numericUpDown_ImageWidth.Value;
             PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY = (int)numericUpDown_ImageHeight.Value;
@@ -373,11 +396,11 @@ namespace LetterBordering
 
             PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0] = new DecorationInfo();
             PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0].Thick = (int)numericUpDown_Size01.Value; //縁取り１太さ
-            PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0].Color = Color.Red; //縁取り１色;
+            PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0].Color = new SerializableColor(button_Color01.BackColor); //縁取り１色
 
             PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[1] = new DecorationInfo();
             PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[1].Thick = (int)numericUpDown_Size02.Value; //縁取り２太さ
-            PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[1].Color = Color.Blue; //縁取り２色;
+            PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[1].Color = new SerializableColor(button_Color02.BackColor); //縁取り２色
             PM.AsProject.SaveData();
         }
 
@@ -407,12 +430,18 @@ namespace LetterBordering
             numericUpDown_FontSize.Value = PM.AsProject.Settings.TextInfoDic[idx].FontSize;
             checkBox_Bold.Checked = PM.AsProject.Settings.TextInfoDic[idx].Bold;
             checkBox_Italic.Checked = PM.AsProject.Settings.TextInfoDic[idx].Italic;
+            checkBox_Centering.Checked = PM.AsProject.Settings.TextInfoDic[idx].Centering;
 
             textBox_InputText.Text = PM.AsProject.Settings.TextInfoDic[idx].Text.Replace("\n", Environment.NewLine);
 
             //装飾
             numericUpDown_Size01.Value = PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0].Thick;
             numericUpDown_Size02.Value = PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[1].Thick;
+
+            //ボタンカラー設定
+            button_Color00.BackColor = PM.AsProject.Settings.TextInfoDic[idx].BaseColor.ToColor();
+            button_Color01.BackColor = PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0].Color.ToColor();
+            button_Color02.BackColor = PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[1].Color.ToColor();
 
         }
 
@@ -626,18 +655,92 @@ namespace LetterBordering
 
         private void button_Color00_Click(object sender, EventArgs e)
         {
-
+            if (EventEnable == false) { return; }
+            EventEnable = false;
+            {
+                ColorDialog cd = new ColorDialog();
+                if (cd.ShowDialog() == DialogResult.OK)
+                {
+                    //選択された色の取得
+                    var idx = PM.AsProject.Settings.SelectedTextIndex;
+                    button_Color00.BackColor = cd.Color;
+                }
+            }
+            EventEnable = true;
             CommonUpdate();
         }
 
         private void button_Color01_Click(object sender, EventArgs e)
         {
 
+            if (EventEnable == false) { return; }
+            EventEnable = false;
+            {
+                ColorDialog cd = new ColorDialog();
+                if (cd.ShowDialog() == DialogResult.OK)
+                {
+                    //選択された色の取得
+                    var idx = PM.AsProject.Settings.SelectedTextIndex;
+                    button_Color01.BackColor = cd.Color;
+                }
+            }
+            EventEnable = true;
+
             CommonUpdate();
         }
 
         private void button_Color02_Click(object sender, EventArgs e)
         {
+            if (EventEnable == false) { return; }
+            EventEnable = false;
+            {
+                ColorDialog cd = new ColorDialog();
+                if (cd.ShowDialog() == DialogResult.OK)
+                {
+                    //選択された色の取得
+                    var idx = PM.AsProject.Settings.SelectedTextIndex;
+                    button_Color02.BackColor = cd.Color;
+                }
+            }
+            EventEnable = true;
+            CommonUpdate();
+        }
+
+        private void checkBox_Centering_CheckedChanged(object sender, EventArgs e)
+        {
+            CommonUpdate();
+
+        }
+
+        private void listView_TextSet_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listView_TextSet_Click(object sender, EventArgs e)
+        {
+            if (EventEnable == false) { return; }
+            EventEnable = false;
+            {
+
+                if (listView_TextSet.FocusedItem != null)
+                {
+                    if (listView_TextSet.FocusedItem.Selected == true)
+                    {
+                        PM.AsProject.Settings.SelectedTextIndex = int.Parse(listView_TextSet.FocusedItem.Text);
+                        UpdateUiValues();
+                    }
+                    else
+                    {
+                        if (listView_TextSet.SelectedItems.Count > 0)
+                        {
+                            PM.AsProject.Settings.SelectedTextIndex = int.Parse(listView_TextSet.SelectedItems[0].Text);
+                            UpdateUiValues();
+                        }
+                    }
+                }
+            }
+            EventEnable = true;
 
             CommonUpdate();
         }

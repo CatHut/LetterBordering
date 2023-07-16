@@ -39,9 +39,13 @@
             splitContainer1 = new SplitContainer();
             button_CreateProject = new Button();
             splitContainer2 = new SplitContainer();
+            button_OpenFolder = new Button();
+            button_Output = new Button();
+            button_OutputAll = new Button();
             button_Up = new Button();
             button_Down = new Button();
             splitContainer3 = new SplitContainer();
+            checkBox_Centering = new CheckBox();
             groupBox_ImageSize = new GroupBox();
             groupBox_Offset = new GroupBox();
             checkBox_CenterBaseY = new CheckBox();
@@ -70,9 +74,6 @@
             label3 = new Label();
             label_StringImageSize = new Label();
             label_ImageSize = new Label();
-            colorDialog = new ColorDialog();
-            button_OutputAll = new Button();
-            button_Output = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Preview).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -103,7 +104,6 @@
             pictureBox_Preview.Location = new Point(10, 75);
             pictureBox_Preview.Name = "pictureBox_Preview";
             pictureBox_Preview.Size = new Size(480, 270);
-            pictureBox_Preview.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox_Preview.TabIndex = 1;
             pictureBox_Preview.TabStop = false;
             // 
@@ -115,7 +115,7 @@
             textBox_InputText.Name = "textBox_InputText";
             textBox_InputText.Size = new Size(452, 110);
             textBox_InputText.TabIndex = 2;
-            textBox_InputText.Text = "てすと漢字ｂb";
+            textBox_InputText.Text = "テスト文字\r\nabcdefghijklmn\r\n漢字\r\nひらがな\r\nカタカナ\r\nﾊﾝｶｸﾓｼﾞ";
             textBox_InputText.TextChanged += textBox_InputText_TextChanged;
             // 
             // listView_TextSet
@@ -128,6 +128,8 @@
             listView_TextSet.TabIndex = 3;
             listView_TextSet.UseCompatibleStateImageBehavior = false;
             listView_TextSet.View = View.Details;
+            listView_TextSet.SelectedIndexChanged += listView_TextSet_SelectedIndexChanged;
+            listView_TextSet.Click += listView_TextSet_Click;
             // 
             // columnHeader_No
             // 
@@ -202,6 +204,7 @@
             // 
             // splitContainer2.Panel1
             // 
+            splitContainer2.Panel1.Controls.Add(button_OpenFolder);
             splitContainer2.Panel1.Controls.Add(button_Output);
             splitContainer2.Panel1.Controls.Add(button_OutputAll);
             splitContainer2.Panel1.Controls.Add(button_Create);
@@ -216,6 +219,33 @@
             splitContainer2.Size = new Size(1184, 565);
             splitContainer2.SplitterDistance = 200;
             splitContainer2.TabIndex = 30;
+            // 
+            // button_OpenFolder
+            // 
+            button_OpenFolder.Location = new Point(13, 490);
+            button_OpenFolder.Name = "button_OpenFolder";
+            button_OpenFolder.Size = new Size(75, 23);
+            button_OpenFolder.TabIndex = 32;
+            button_OpenFolder.Text = "出力先開く";
+            button_OpenFolder.UseVisualStyleBackColor = true;
+            // 
+            // button_Output
+            // 
+            button_Output.Location = new Point(13, 461);
+            button_Output.Name = "button_Output";
+            button_Output.Size = new Size(75, 23);
+            button_Output.TabIndex = 31;
+            button_Output.Text = "画像出力";
+            button_Output.UseVisualStyleBackColor = true;
+            // 
+            // button_OutputAll
+            // 
+            button_OutputAll.Location = new Point(94, 461);
+            button_OutputAll.Name = "button_OutputAll";
+            button_OutputAll.Size = new Size(75, 23);
+            button_OutputAll.TabIndex = 30;
+            button_OutputAll.Text = "全画像出力";
+            button_OutputAll.UseVisualStyleBackColor = true;
             // 
             // button_Up
             // 
@@ -245,6 +275,7 @@
             // 
             // splitContainer3.Panel1
             // 
+            splitContainer3.Panel1.Controls.Add(checkBox_Centering);
             splitContainer3.Panel1.Controls.Add(groupBox_ImageSize);
             splitContainer3.Panel1.Controls.Add(button_Color00);
             splitContainer3.Panel1.Controls.Add(textBox_InputText);
@@ -267,6 +298,17 @@
             splitContainer3.Size = new Size(980, 565);
             splitContainer3.SplitterDistance = 480;
             splitContainer3.TabIndex = 31;
+            // 
+            // checkBox_Centering
+            // 
+            checkBox_Centering.AutoSize = true;
+            checkBox_Centering.Location = new Point(120, 212);
+            checkBox_Centering.Name = "checkBox_Centering";
+            checkBox_Centering.Size = new Size(80, 19);
+            checkBox_Centering.TabIndex = 30;
+            checkBox_Centering.Text = "センタリング";
+            checkBox_Centering.UseVisualStyleBackColor = true;
+            checkBox_Centering.CheckedChanged += checkBox_Centering_CheckedChanged;
             // 
             // groupBox_ImageSize
             // 
@@ -432,7 +474,7 @@
             // 
             // button_Color00
             // 
-            button_Color00.Location = new Point(390, 209);
+            button_Color00.Location = new Point(258, 185);
             button_Color00.Name = "button_Color00";
             button_Color00.Size = new Size(75, 23);
             button_Color00.TabIndex = 29;
@@ -443,7 +485,7 @@
             // comboBox_Font
             // 
             comboBox_Font.FormattingEnabled = true;
-            comboBox_Font.Location = new Point(13, 208);
+            comboBox_Font.Location = new Point(13, 185);
             comboBox_Font.Name = "comboBox_Font";
             comboBox_Font.Size = new Size(177, 23);
             comboBox_Font.TabIndex = 7;
@@ -453,7 +495,7 @@
             // checkBox_Bold
             // 
             checkBox_Bold.AutoSize = true;
-            checkBox_Bold.Location = new Point(278, 212);
+            checkBox_Bold.Location = new Point(13, 212);
             checkBox_Bold.Name = "checkBox_Bold";
             checkBox_Bold.Size = new Size(50, 19);
             checkBox_Bold.TabIndex = 8;
@@ -464,7 +506,7 @@
             // checkBox_Italic
             // 
             checkBox_Italic.AutoSize = true;
-            checkBox_Italic.Location = new Point(334, 212);
+            checkBox_Italic.Location = new Point(69, 212);
             checkBox_Italic.Name = "checkBox_Italic";
             checkBox_Italic.Size = new Size(50, 19);
             checkBox_Italic.TabIndex = 9;
@@ -494,7 +536,8 @@
             // 
             // numericUpDown_FontSize
             // 
-            numericUpDown_FontSize.Location = new Point(208, 208);
+            numericUpDown_FontSize.Location = new Point(196, 185);
+            numericUpDown_FontSize.Maximum = new decimal(new int[] { 500, 0, 0, 0 });
             numericUpDown_FontSize.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown_FontSize.Name = "numericUpDown_FontSize";
             numericUpDown_FontSize.Size = new Size(56, 23);
@@ -556,28 +599,6 @@
             label_ImageSize.TabIndex = 23;
             label_ImageSize.Text = "0000 × 0000";
             // 
-            // colorDialog
-            // 
-            colorDialog.FullOpen = true;
-            // 
-            // button_OutputAll
-            // 
-            button_OutputAll.Location = new Point(12, 490);
-            button_OutputAll.Name = "button_OutputAll";
-            button_OutputAll.Size = new Size(75, 23);
-            button_OutputAll.TabIndex = 30;
-            button_OutputAll.Text = "全画像出力";
-            button_OutputAll.UseVisualStyleBackColor = true;
-            // 
-            // button_Output
-            // 
-            button_Output.Location = new Point(13, 461);
-            button_Output.Name = "button_Output";
-            button_Output.Size = new Size(75, 23);
-            button_Output.TabIndex = 31;
-            button_Output.Text = "画像出力";
-            button_Output.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -627,7 +648,6 @@
         private ComboBox comboBox_Project;
         private SplitContainer splitContainer1;
         private Button button_CreateProject;
-        private ColorDialog colorDialog;
         private ComboBox comboBox_Font;
         private Button button_Color01;
         private CheckBox checkBox_Italic;
@@ -662,5 +682,7 @@
         private SplitContainer splitContainer3;
         private Button button_Output;
         private Button button_OutputAll;
+        private Button button_OpenFolder;
+        private CheckBox checkBox_Centering;
     }
 }

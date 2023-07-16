@@ -263,7 +263,11 @@ namespace LetterBordering
             var decoDic = AsProject.Settings.TextInfoDic[key].DecorationDic;
 
             decoDic = decoDic ?? new CatHut.SerializableSortedDictionary<int, DecorationInfo>();
-            decoDic.Add(decoDic.Count, new DecorationInfo());
+
+            if (!decoDic.ContainsKey(decoDic.Count))
+            {
+                decoDic.Add(decoDic.Count, new DecorationInfo());
+            }
         }
 
 
