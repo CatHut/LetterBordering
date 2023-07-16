@@ -41,6 +41,7 @@ namespace LetterBordering
                 UpdateUiValues();
             }
             EventEnable = true;
+            CommonUpdate();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -118,7 +119,6 @@ namespace LetterBordering
             int width = Math.Max(1, textSize.Width + margin * 2);
             int height = Math.Max(1, textSize.Height + margin * 2);
 
-            label_StringImageSize.Text = width.ToString().PadLeft(4) + "×" + height.ToString().PadLeft(4);
 
             // 画像を作成する
             Bitmap image = new Bitmap(width, height, PixelFormat.Format32bppArgb);
@@ -201,6 +201,10 @@ namespace LetterBordering
         {
 
             var bmp = CreateImage();
+            Rectangle? destRect = null;
+
+            //サイズ表示更新
+            label_StringImageSize.Text = bmp.Width.ToString().PadLeft(4) + "×" + bmp.Height.ToString().PadLeft(4);
 
 
             //画像サイズ調整
@@ -212,16 +216,46 @@ namespace LetterBordering
 
                 using (Graphics tempG = Graphics.FromImage(resizeBmp))
                 {
-                    tempG.DrawImage(bmp, new Point(textInfo.OffsetX, textInfo.OffsetY));
+                    var xy = CalcOffset(bmp, resizeBmp);
+                    var src_x = 0;
+                    var src_y = 0;
+                    var src_w = bmp.Width;
+                    var src_h = bmp.Height;
+
+                    var dest_x = xy.Width;
+                    var dest_y = xy.Height;
+
+                    if (xy.Width < 0)
+                    {
+                        src_x = Math.Abs(xy.Width);
+                        src_w = src_w - src_x;
+                        dest_x = 0;
+                    }
+
+                    if (xy.Height < 0)
+                    {
+                        src_y = Math.Abs(xy.Height);
+                        src_h = src_h - src_y;
+                        dest_y = 0;
+                    }
+                    Rectangle srcRect = new Rectangle(src_x, src_y, src_w, src_h);
+                    destRect = new Rectangle(dest_x, dest_y, src_w, src_h);
+                    tempG.DrawImage(bmp, (Rectangle)destRect, srcRect, GraphicsUnit.Pixel);
                 }
 
                 bmp.Dispose();
                 bmp = resizeBmp;
             }
 
+            //サイズ表示更新
+            label_ImageSize.Text = bmp.Width.ToString().PadLeft(4) + "×" + bmp.Height.ToString().PadLeft(4);
+
+
             //保存はここでする。
 
 
+
+            //表示用の調整
             Graphics g = Graphics.FromImage(bmp);
             PushDisporsable(g);
 
@@ -229,8 +263,18 @@ namespace LetterBordering
             Pen pen = new Pen(Color.Black);
             PushDisporsable(pen);
 
-            // 画像の端から1ピクセル内側に矩形を描画する
-            g.DrawRectangle(pen, 0, 0, bmp.Width - 1, bmp.Height - 1);
+            if (destRect == null)
+            {
+                // 画像の端から1ピクセル内側に矩形を描画する
+                g.DrawRectangle(pen, 0, 0, bmp.Width - 1, bmp.Height - 1);
+            }
+            else
+            {
+                // 画像の端から1ピクセル内側に矩形を描画する
+                g.DrawRectangle(pen, (Rectangle)destRect);
+            }
+
+
 
             //前回のBitmapオブジェクトをDisposeする
             if (pictureBox_Preview.Image != null)
@@ -244,6 +288,39 @@ namespace LetterBordering
             ReleaseDisposable();
 
         }
+
+        private Size CalcOffset(Bitmap str, Bitmap bmp)
+        {
+
+            var idx = PM.AsProject.Settings.SelectedTextIndex;
+            var textInfo = PM.AsProject.Settings.TextInfoDic[idx];
+
+            var tempX = textInfo.OffsetX;
+            var tempY = textInfo.OffsetY;
+
+            if (textInfo.CenterBaseX)
+            {
+                tempX = textInfo.OffsetX - str.Width / 2;
+            }
+            if (textInfo.CenterBaseY)
+            {
+                tempY = textInfo.OffsetY - str.Height / 2;
+            }
+
+            if (textInfo.AutoCenterX)
+            {
+                tempX = bmp.Width / 2 - str.Width / 2;
+            }
+            if (textInfo.AutoCenterY)
+            {
+                tempY = bmp.Height / 2 - str.Height / 2;
+            }
+
+            return new Size(tempX, tempY);
+
+        }
+
+
 
         private Font CreateFont(TextInfo ti)
         {
@@ -514,7 +591,55 @@ namespace LetterBordering
 
         private void button_ImageSizeClear_Click(object sender, EventArgs e)
         {
+            CommonUpdate();
+        }
 
+        private void numericUpDown_OffsetX_ValueChanged(object sender, EventArgs e)
+        {
+            CommonUpdate();
+        }
+
+        private void numericUpDown_OffsetY_ValueChanged(object sender, EventArgs e)
+        {
+            CommonUpdate();
+        }
+
+        private void checkBox_CenterBaseX_CheckedChanged(object sender, EventArgs e)
+        {
+            CommonUpdate();
+        }
+
+        private void checkBox_CenterBaseY_CheckedChanged(object sender, EventArgs e)
+        {
+            CommonUpdate();
+        }
+
+        private void checkBox_AutoCenterX_CheckedChanged(object sender, EventArgs e)
+        {
+            CommonUpdate();
+        }
+
+        private void checkBox_AutoCenterY_CheckedChanged(object sender, EventArgs e)
+        {
+            CommonUpdate();
+        }
+
+        private void button_Color00_Click(object sender, EventArgs e)
+        {
+
+            CommonUpdate();
+        }
+
+        private void button_Color01_Click(object sender, EventArgs e)
+        {
+
+            CommonUpdate();
+        }
+
+        private void button_Color02_Click(object sender, EventArgs e)
+        {
+
+            CommonUpdate();
         }
     }
 }

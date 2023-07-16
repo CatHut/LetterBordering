@@ -38,7 +38,10 @@
             comboBox_Project = new ComboBox();
             splitContainer1 = new SplitContainer();
             button_CreateProject = new Button();
-            button_Color00 = new Button();
+            splitContainer2 = new SplitContainer();
+            button_Up = new Button();
+            button_Down = new Button();
+            splitContainer3 = new SplitContainer();
             groupBox_ImageSize = new GroupBox();
             groupBox_Offset = new GroupBox();
             checkBox_CenterBaseY = new CheckBox();
@@ -54,26 +57,35 @@
             numericUpDown_ImageHeight = new NumericUpDown();
             label1 = new Label();
             label2 = new Label();
+            button_Color00 = new Button();
+            comboBox_Font = new ComboBox();
+            checkBox_Bold = new CheckBox();
+            checkBox_Italic = new CheckBox();
+            button_Color01 = new Button();
+            button_Color02 = new Button();
+            numericUpDown_FontSize = new NumericUpDown();
+            numericUpDown_Size01 = new NumericUpDown();
+            numericUpDown_Size02 = new NumericUpDown();
             label4 = new Label();
             label3 = new Label();
-            label_ImageSize = new Label();
             label_StringImageSize = new Label();
-            numericUpDown_FontSize = new NumericUpDown();
-            button_Down = new Button();
-            button_Up = new Button();
-            numericUpDown_Size02 = new NumericUpDown();
-            numericUpDown_Size01 = new NumericUpDown();
-            button_Color02 = new Button();
-            button_Color01 = new Button();
-            checkBox_Italic = new CheckBox();
-            checkBox_Bold = new CheckBox();
-            comboBox_Font = new ComboBox();
+            label_ImageSize = new Label();
             colorDialog = new ColorDialog();
+            button_OutputAll = new Button();
+            button_Output = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Preview).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
+            splitContainer2.Panel1.SuspendLayout();
+            splitContainer2.Panel2.SuspendLayout();
+            splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer3).BeginInit();
+            splitContainer3.Panel1.SuspendLayout();
+            splitContainer3.Panel2.SuspendLayout();
+            splitContainer3.SuspendLayout();
             groupBox_ImageSize.SuspendLayout();
             groupBox_Offset.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_OffsetX).BeginInit();
@@ -81,16 +93,16 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown_ImageWidth).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_ImageHeight).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_FontSize).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown_Size02).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_Size01).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown_Size02).BeginInit();
             SuspendLayout();
             // 
             // pictureBox_Preview
             // 
             pictureBox_Preview.BorderStyle = BorderStyle.FixedSingle;
-            pictureBox_Preview.Location = new Point(862, 76);
+            pictureBox_Preview.Location = new Point(10, 75);
             pictureBox_Preview.Name = "pictureBox_Preview";
-            pictureBox_Preview.Size = new Size(480, 480);
+            pictureBox_Preview.Size = new Size(480, 270);
             pictureBox_Preview.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox_Preview.TabIndex = 1;
             pictureBox_Preview.TabStop = false;
@@ -98,10 +110,10 @@
             // textBox_InputText
             // 
             textBox_InputText.AcceptsReturn = true;
-            textBox_InputText.Location = new Point(223, 247);
+            textBox_InputText.Location = new Point(13, 237);
             textBox_InputText.Multiline = true;
             textBox_InputText.Name = "textBox_InputText";
-            textBox_InputText.Size = new Size(566, 110);
+            textBox_InputText.Size = new Size(452, 110);
             textBox_InputText.TabIndex = 2;
             textBox_InputText.Text = "てすと漢字ｂb";
             textBox_InputText.TextChanged += textBox_InputText_TextChanged;
@@ -110,9 +122,9 @@
             // 
             listView_TextSet.Columns.AddRange(new ColumnHeader[] { columnHeader_No, columnHeader_Text });
             listView_TextSet.HeaderStyle = ColumnHeaderStyle.Nonclickable;
-            listView_TextSet.Location = new Point(12, 59);
+            listView_TextSet.Location = new Point(13, 49);
             listView_TextSet.Name = "listView_TextSet";
-            listView_TextSet.Size = new Size(149, 502);
+            listView_TextSet.Size = new Size(149, 396);
             listView_TextSet.TabIndex = 3;
             listView_TextSet.UseCompatibleStateImageBehavior = false;
             listView_TextSet.View = View.Details;
@@ -128,7 +140,7 @@
             // 
             // button_Create
             // 
-            button_Create.Location = new Point(12, 30);
+            button_Create.Location = new Point(13, 20);
             button_Create.Name = "button_Create";
             button_Create.Size = new Size(67, 23);
             button_Create.TabIndex = 4;
@@ -138,7 +150,7 @@
             // 
             // button_Delete
             // 
-            button_Delete.Location = new Point(93, 30);
+            button_Delete.Location = new Point(94, 20);
             button_Delete.Name = "button_Delete";
             button_Delete.Size = new Size(68, 23);
             button_Delete.TabIndex = 5;
@@ -167,29 +179,9 @@
             // 
             // splitContainer1.Panel2
             // 
-            splitContainer1.Panel2.Controls.Add(button_Color00);
-            splitContainer1.Panel2.Controls.Add(groupBox_ImageSize);
-            splitContainer1.Panel2.Controls.Add(label4);
-            splitContainer1.Panel2.Controls.Add(label3);
-            splitContainer1.Panel2.Controls.Add(label_ImageSize);
-            splitContainer1.Panel2.Controls.Add(label_StringImageSize);
-            splitContainer1.Panel2.Controls.Add(numericUpDown_FontSize);
-            splitContainer1.Panel2.Controls.Add(button_Down);
-            splitContainer1.Panel2.Controls.Add(button_Up);
-            splitContainer1.Panel2.Controls.Add(numericUpDown_Size02);
-            splitContainer1.Panel2.Controls.Add(numericUpDown_Size01);
-            splitContainer1.Panel2.Controls.Add(button_Color02);
-            splitContainer1.Panel2.Controls.Add(button_Color01);
-            splitContainer1.Panel2.Controls.Add(checkBox_Italic);
-            splitContainer1.Panel2.Controls.Add(checkBox_Bold);
-            splitContainer1.Panel2.Controls.Add(comboBox_Font);
-            splitContainer1.Panel2.Controls.Add(pictureBox_Preview);
-            splitContainer1.Panel2.Controls.Add(textBox_InputText);
-            splitContainer1.Panel2.Controls.Add(button_Delete);
-            splitContainer1.Panel2.Controls.Add(listView_TextSet);
-            splitContainer1.Panel2.Controls.Add(button_Create);
-            splitContainer1.Size = new Size(1358, 633);
-            splitContainer1.SplitterDistance = 47;
+            splitContainer1.Panel2.Controls.Add(splitContainer2);
+            splitContainer1.Size = new Size(1184, 633);
+            splitContainer1.SplitterDistance = 64;
             splitContainer1.TabIndex = 7;
             // 
             // button_CreateProject
@@ -202,14 +194,79 @@
             button_CreateProject.UseVisualStyleBackColor = true;
             button_CreateProject.Click += button_CreateProject_Click;
             // 
-            // button_Color00
+            // splitContainer2
             // 
-            button_Color00.Location = new Point(600, 219);
-            button_Color00.Name = "button_Color00";
-            button_Color00.Size = new Size(75, 23);
-            button_Color00.TabIndex = 29;
-            button_Color00.Text = "色変更";
-            button_Color00.UseVisualStyleBackColor = true;
+            splitContainer2.Dock = DockStyle.Fill;
+            splitContainer2.Location = new Point(0, 0);
+            splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            splitContainer2.Panel1.Controls.Add(button_Output);
+            splitContainer2.Panel1.Controls.Add(button_OutputAll);
+            splitContainer2.Panel1.Controls.Add(button_Create);
+            splitContainer2.Panel1.Controls.Add(listView_TextSet);
+            splitContainer2.Panel1.Controls.Add(button_Delete);
+            splitContainer2.Panel1.Controls.Add(button_Up);
+            splitContainer2.Panel1.Controls.Add(button_Down);
+            // 
+            // splitContainer2.Panel2
+            // 
+            splitContainer2.Panel2.Controls.Add(splitContainer3);
+            splitContainer2.Size = new Size(1184, 565);
+            splitContainer2.SplitterDistance = 200;
+            splitContainer2.TabIndex = 30;
+            // 
+            // button_Up
+            // 
+            button_Up.Location = new Point(168, 169);
+            button_Up.Name = "button_Up";
+            button_Up.Size = new Size(26, 53);
+            button_Up.TabIndex = 14;
+            button_Up.Text = "▲";
+            button_Up.UseVisualStyleBackColor = true;
+            button_Up.Click += button_Up_Click;
+            // 
+            // button_Down
+            // 
+            button_Down.Location = new Point(168, 238);
+            button_Down.Name = "button_Down";
+            button_Down.Size = new Size(26, 53);
+            button_Down.TabIndex = 15;
+            button_Down.Text = "▼";
+            button_Down.UseVisualStyleBackColor = true;
+            button_Down.Click += button_Down_Click;
+            // 
+            // splitContainer3
+            // 
+            splitContainer3.Dock = DockStyle.Fill;
+            splitContainer3.Location = new Point(0, 0);
+            splitContainer3.Name = "splitContainer3";
+            // 
+            // splitContainer3.Panel1
+            // 
+            splitContainer3.Panel1.Controls.Add(groupBox_ImageSize);
+            splitContainer3.Panel1.Controls.Add(button_Color00);
+            splitContainer3.Panel1.Controls.Add(textBox_InputText);
+            splitContainer3.Panel1.Controls.Add(comboBox_Font);
+            splitContainer3.Panel1.Controls.Add(checkBox_Bold);
+            splitContainer3.Panel1.Controls.Add(checkBox_Italic);
+            splitContainer3.Panel1.Controls.Add(button_Color01);
+            splitContainer3.Panel1.Controls.Add(button_Color02);
+            splitContainer3.Panel1.Controls.Add(numericUpDown_FontSize);
+            splitContainer3.Panel1.Controls.Add(numericUpDown_Size01);
+            splitContainer3.Panel1.Controls.Add(numericUpDown_Size02);
+            // 
+            // splitContainer3.Panel2
+            // 
+            splitContainer3.Panel2.Controls.Add(label4);
+            splitContainer3.Panel2.Controls.Add(pictureBox_Preview);
+            splitContainer3.Panel2.Controls.Add(label3);
+            splitContainer3.Panel2.Controls.Add(label_StringImageSize);
+            splitContainer3.Panel2.Controls.Add(label_ImageSize);
+            splitContainer3.Size = new Size(980, 565);
+            splitContainer3.SplitterDistance = 480;
+            splitContainer3.TabIndex = 31;
             // 
             // groupBox_ImageSize
             // 
@@ -219,7 +276,7 @@
             groupBox_ImageSize.Controls.Add(numericUpDown_ImageHeight);
             groupBox_ImageSize.Controls.Add(label1);
             groupBox_ImageSize.Controls.Add(label2);
-            groupBox_ImageSize.Location = new Point(223, 30);
+            groupBox_ImageSize.Location = new Point(13, 20);
             groupBox_ImageSize.Name = "groupBox_ImageSize";
             groupBox_ImageSize.Size = new Size(411, 154);
             groupBox_ImageSize.TabIndex = 28;
@@ -252,6 +309,7 @@
             checkBox_CenterBaseY.TabIndex = 34;
             checkBox_CenterBaseY.Text = "中央基準";
             checkBox_CenterBaseY.UseVisualStyleBackColor = true;
+            checkBox_CenterBaseY.CheckedChanged += checkBox_CenterBaseY_CheckedChanged;
             // 
             // checkBox_CenterBaseX
             // 
@@ -262,6 +320,7 @@
             checkBox_CenterBaseX.TabIndex = 33;
             checkBox_CenterBaseX.Text = "中央基準";
             checkBox_CenterBaseX.UseVisualStyleBackColor = true;
+            checkBox_CenterBaseX.CheckedChanged += checkBox_CenterBaseX_CheckedChanged;
             // 
             // checkBox_AutoCenterY
             // 
@@ -272,6 +331,7 @@
             checkBox_AutoCenterY.TabIndex = 32;
             checkBox_AutoCenterY.Text = "自動中央";
             checkBox_AutoCenterY.UseVisualStyleBackColor = true;
+            checkBox_AutoCenterY.CheckedChanged += checkBox_AutoCenterY_CheckedChanged;
             // 
             // checkBox_AutoCenterX
             // 
@@ -282,6 +342,7 @@
             checkBox_AutoCenterX.TabIndex = 29;
             checkBox_AutoCenterX.Text = "自動中央";
             checkBox_AutoCenterX.UseVisualStyleBackColor = true;
+            checkBox_AutoCenterX.CheckedChanged += checkBox_AutoCenterX_CheckedChanged;
             // 
             // label_OffsetY
             // 
@@ -309,6 +370,7 @@
             numericUpDown_OffsetX.Size = new Size(75, 23);
             numericUpDown_OffsetX.TabIndex = 26;
             numericUpDown_OffsetX.Value = new decimal(new int[] { 1920, 0, 0, 0 });
+            numericUpDown_OffsetX.ValueChanged += numericUpDown_OffsetX_ValueChanged;
             // 
             // numericUpDown_OffsetY
             // 
@@ -318,6 +380,7 @@
             numericUpDown_OffsetY.Size = new Size(75, 23);
             numericUpDown_OffsetY.TabIndex = 27;
             numericUpDown_OffsetY.Value = new decimal(new int[] { 1080, 0, 0, 0 });
+            numericUpDown_OffsetY.ValueChanged += numericUpDown_OffsetY_ValueChanged;
             // 
             // button_ImageSizeClear
             // 
@@ -367,123 +430,30 @@
             label2.TabIndex = 21;
             label2.Text = "縦";
             // 
-            // label4
+            // button_Color00
             // 
-            label4.AutoSize = true;
-            label4.Location = new Point(862, 21);
-            label4.Name = "label4";
-            label4.Size = new Size(59, 15);
-            label4.TabIndex = 25;
-            label4.Text = "画像サイズ";
+            button_Color00.Location = new Point(390, 209);
+            button_Color00.Name = "button_Color00";
+            button_Color00.Size = new Size(75, 23);
+            button_Color00.TabIndex = 29;
+            button_Color00.Text = "色変更";
+            button_Color00.UseVisualStyleBackColor = true;
+            button_Color00.Click += button_Color00_Click;
             // 
-            // label3
+            // comboBox_Font
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(862, 47);
-            label3.Name = "label3";
-            label3.Size = new Size(55, 15);
-            label3.TabIndex = 24;
-            label3.Text = "文字部分";
-            // 
-            // label_ImageSize
-            // 
-            label_ImageSize.AutoSize = true;
-            label_ImageSize.Location = new Point(923, 21);
-            label_ImageSize.Name = "label_ImageSize";
-            label_ImageSize.Size = new Size(69, 15);
-            label_ImageSize.TabIndex = 23;
-            label_ImageSize.Text = "0000 × 0000";
-            // 
-            // label_StringImageSize
-            // 
-            label_StringImageSize.AutoSize = true;
-            label_StringImageSize.Location = new Point(923, 47);
-            label_StringImageSize.Name = "label_StringImageSize";
-            label_StringImageSize.Size = new Size(69, 15);
-            label_StringImageSize.TabIndex = 22;
-            label_StringImageSize.Text = "0000 × 0000";
-            // 
-            // numericUpDown_FontSize
-            // 
-            numericUpDown_FontSize.Location = new Point(418, 218);
-            numericUpDown_FontSize.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            numericUpDown_FontSize.Name = "numericUpDown_FontSize";
-            numericUpDown_FontSize.Size = new Size(56, 23);
-            numericUpDown_FontSize.TabIndex = 16;
-            numericUpDown_FontSize.Value = new decimal(new int[] { 36, 0, 0, 0 });
-            numericUpDown_FontSize.ValueChanged += numericUpDown_FontSize_ValueChanged;
-            // 
-            // button_Down
-            // 
-            button_Down.Location = new Point(167, 287);
-            button_Down.Name = "button_Down";
-            button_Down.Size = new Size(26, 53);
-            button_Down.TabIndex = 15;
-            button_Down.Text = "▼";
-            button_Down.UseVisualStyleBackColor = true;
-            button_Down.Click += button_Down_Click;
-            // 
-            // button_Up
-            // 
-            button_Up.Location = new Point(167, 218);
-            button_Up.Name = "button_Up";
-            button_Up.Size = new Size(26, 53);
-            button_Up.TabIndex = 14;
-            button_Up.Text = "▲";
-            button_Up.UseVisualStyleBackColor = true;
-            button_Up.Click += button_Up_Click;
-            // 
-            // numericUpDown_Size02
-            // 
-            numericUpDown_Size02.Location = new Point(223, 420);
-            numericUpDown_Size02.Name = "numericUpDown_Size02";
-            numericUpDown_Size02.Size = new Size(75, 23);
-            numericUpDown_Size02.TabIndex = 13;
-            numericUpDown_Size02.Value = new decimal(new int[] { 10, 0, 0, 0 });
-            numericUpDown_Size02.ValueChanged += numericUpDown_Size02_ValueChanged;
-            // 
-            // numericUpDown_Size01
-            // 
-            numericUpDown_Size01.Location = new Point(223, 380);
-            numericUpDown_Size01.Name = "numericUpDown_Size01";
-            numericUpDown_Size01.Size = new Size(75, 23);
-            numericUpDown_Size01.TabIndex = 12;
-            numericUpDown_Size01.Value = new decimal(new int[] { 10, 0, 0, 0 });
-            numericUpDown_Size01.ValueChanged += numericUpDown_Size01_ValueChanged;
-            // 
-            // button_Color02
-            // 
-            button_Color02.Location = new Point(308, 420);
-            button_Color02.Name = "button_Color02";
-            button_Color02.Size = new Size(75, 23);
-            button_Color02.TabIndex = 11;
-            button_Color02.Text = "色変更";
-            button_Color02.UseVisualStyleBackColor = true;
-            // 
-            // button_Color01
-            // 
-            button_Color01.Location = new Point(308, 378);
-            button_Color01.Name = "button_Color01";
-            button_Color01.Size = new Size(75, 23);
-            button_Color01.TabIndex = 10;
-            button_Color01.Text = "色変更";
-            button_Color01.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_Italic
-            // 
-            checkBox_Italic.AutoSize = true;
-            checkBox_Italic.Location = new Point(544, 222);
-            checkBox_Italic.Name = "checkBox_Italic";
-            checkBox_Italic.Size = new Size(50, 19);
-            checkBox_Italic.TabIndex = 9;
-            checkBox_Italic.Text = "斜体";
-            checkBox_Italic.UseVisualStyleBackColor = true;
-            checkBox_Italic.CheckedChanged += checkBox_Italic_CheckedChanged;
+            comboBox_Font.FormattingEnabled = true;
+            comboBox_Font.Location = new Point(13, 208);
+            comboBox_Font.Name = "comboBox_Font";
+            comboBox_Font.Size = new Size(177, 23);
+            comboBox_Font.TabIndex = 7;
+            comboBox_Font.Text = "Arial";
+            comboBox_Font.SelectedValueChanged += comboBox_Font_SelectedValueChanged;
             // 
             // checkBox_Bold
             // 
             checkBox_Bold.AutoSize = true;
-            checkBox_Bold.Location = new Point(488, 222);
+            checkBox_Bold.Location = new Point(278, 212);
             checkBox_Bold.Name = "checkBox_Bold";
             checkBox_Bold.Size = new Size(50, 19);
             checkBox_Bold.TabIndex = 8;
@@ -491,25 +461,128 @@
             checkBox_Bold.UseVisualStyleBackColor = true;
             checkBox_Bold.CheckedChanged += checkBox_Bold_CheckedChanged;
             // 
-            // comboBox_Font
+            // checkBox_Italic
             // 
-            comboBox_Font.FormattingEnabled = true;
-            comboBox_Font.Location = new Point(223, 218);
-            comboBox_Font.Name = "comboBox_Font";
-            comboBox_Font.Size = new Size(177, 23);
-            comboBox_Font.TabIndex = 7;
-            comboBox_Font.Text = "Arial";
-            comboBox_Font.SelectedValueChanged += comboBox_Font_SelectedValueChanged;
+            checkBox_Italic.AutoSize = true;
+            checkBox_Italic.Location = new Point(334, 212);
+            checkBox_Italic.Name = "checkBox_Italic";
+            checkBox_Italic.Size = new Size(50, 19);
+            checkBox_Italic.TabIndex = 9;
+            checkBox_Italic.Text = "斜体";
+            checkBox_Italic.UseVisualStyleBackColor = true;
+            checkBox_Italic.CheckedChanged += checkBox_Italic_CheckedChanged;
+            // 
+            // button_Color01
+            // 
+            button_Color01.Location = new Point(98, 368);
+            button_Color01.Name = "button_Color01";
+            button_Color01.Size = new Size(75, 23);
+            button_Color01.TabIndex = 10;
+            button_Color01.Text = "色変更";
+            button_Color01.UseVisualStyleBackColor = true;
+            button_Color01.Click += button_Color01_Click;
+            // 
+            // button_Color02
+            // 
+            button_Color02.Location = new Point(98, 410);
+            button_Color02.Name = "button_Color02";
+            button_Color02.Size = new Size(75, 23);
+            button_Color02.TabIndex = 11;
+            button_Color02.Text = "色変更";
+            button_Color02.UseVisualStyleBackColor = true;
+            button_Color02.Click += button_Color02_Click;
+            // 
+            // numericUpDown_FontSize
+            // 
+            numericUpDown_FontSize.Location = new Point(208, 208);
+            numericUpDown_FontSize.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown_FontSize.Name = "numericUpDown_FontSize";
+            numericUpDown_FontSize.Size = new Size(56, 23);
+            numericUpDown_FontSize.TabIndex = 16;
+            numericUpDown_FontSize.Value = new decimal(new int[] { 36, 0, 0, 0 });
+            numericUpDown_FontSize.ValueChanged += numericUpDown_FontSize_ValueChanged;
+            // 
+            // numericUpDown_Size01
+            // 
+            numericUpDown_Size01.Location = new Point(13, 370);
+            numericUpDown_Size01.Name = "numericUpDown_Size01";
+            numericUpDown_Size01.Size = new Size(75, 23);
+            numericUpDown_Size01.TabIndex = 12;
+            numericUpDown_Size01.Value = new decimal(new int[] { 10, 0, 0, 0 });
+            numericUpDown_Size01.ValueChanged += numericUpDown_Size01_ValueChanged;
+            // 
+            // numericUpDown_Size02
+            // 
+            numericUpDown_Size02.Location = new Point(13, 410);
+            numericUpDown_Size02.Name = "numericUpDown_Size02";
+            numericUpDown_Size02.Size = new Size(75, 23);
+            numericUpDown_Size02.TabIndex = 13;
+            numericUpDown_Size02.Value = new decimal(new int[] { 10, 0, 0, 0 });
+            numericUpDown_Size02.ValueChanged += numericUpDown_Size02_ValueChanged;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(10, 20);
+            label4.Name = "label4";
+            label4.Size = new Size(83, 15);
+            label4.TabIndex = 25;
+            label4.Text = "出力画像サイズ";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(10, 46);
+            label3.Name = "label3";
+            label3.Size = new Size(83, 15);
+            label3.TabIndex = 24;
+            label3.Text = "文字部分サイズ";
+            // 
+            // label_StringImageSize
+            // 
+            label_StringImageSize.AutoSize = true;
+            label_StringImageSize.Location = new Point(99, 46);
+            label_StringImageSize.Name = "label_StringImageSize";
+            label_StringImageSize.Size = new Size(69, 15);
+            label_StringImageSize.TabIndex = 22;
+            label_StringImageSize.Text = "0000 × 0000";
+            // 
+            // label_ImageSize
+            // 
+            label_ImageSize.AutoSize = true;
+            label_ImageSize.Location = new Point(99, 20);
+            label_ImageSize.Name = "label_ImageSize";
+            label_ImageSize.Size = new Size(69, 15);
+            label_ImageSize.TabIndex = 23;
+            label_ImageSize.Text = "0000 × 0000";
             // 
             // colorDialog
             // 
             colorDialog.FullOpen = true;
             // 
+            // button_OutputAll
+            // 
+            button_OutputAll.Location = new Point(12, 490);
+            button_OutputAll.Name = "button_OutputAll";
+            button_OutputAll.Size = new Size(75, 23);
+            button_OutputAll.TabIndex = 30;
+            button_OutputAll.Text = "全画像出力";
+            button_OutputAll.UseVisualStyleBackColor = true;
+            // 
+            // button_Output
+            // 
+            button_Output.Location = new Point(13, 461);
+            button_Output.Name = "button_Output";
+            button_Output.Size = new Size(75, 23);
+            button_Output.TabIndex = 31;
+            button_Output.Text = "画像出力";
+            button_Output.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1358, 633);
+            ClientSize = new Size(1184, 633);
             Controls.Add(splitContainer1);
             Name = "Form1";
             Text = "LetterBordering";
@@ -517,9 +590,18 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox_Preview).EndInit();
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
-            splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            splitContainer2.Panel1.ResumeLayout(false);
+            splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
+            splitContainer2.ResumeLayout(false);
+            splitContainer3.Panel1.ResumeLayout(false);
+            splitContainer3.Panel1.PerformLayout();
+            splitContainer3.Panel2.ResumeLayout(false);
+            splitContainer3.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer3).EndInit();
+            splitContainer3.ResumeLayout(false);
             groupBox_ImageSize.ResumeLayout(false);
             groupBox_ImageSize.PerformLayout();
             groupBox_Offset.ResumeLayout(false);
@@ -529,8 +611,8 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown_ImageWidth).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_ImageHeight).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_FontSize).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown_Size02).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_Size01).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown_Size02).EndInit();
             ResumeLayout(false);
         }
 
@@ -576,5 +658,9 @@
         private CheckBox checkBox_CenterBaseX;
         private CheckBox checkBox_AutoCenterY;
         private Button button_Color00;
+        private SplitContainer splitContainer2;
+        private SplitContainer splitContainer3;
+        private Button button_Output;
+        private Button button_OutputAll;
     }
 }
