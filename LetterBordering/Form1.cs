@@ -19,6 +19,7 @@ namespace LetterBordering
         ProjectManager PM;
 
         bool EventEnable = true;
+        DateTime TestTime;
 
 
 
@@ -60,6 +61,19 @@ namespace LetterBordering
 
         private void textBox_InputText_TextChanged(object sender, EventArgs e)
         {
+
+            var ts = DateTime.Now - TestTime;
+            TestTime = DateTime.Now;
+            Debug.WriteLine(ts.TotalSeconds);
+
+            timer_TextChanged.Stop();
+            timer_TextChanged.Start();
+
+        }
+        private void timer_TextChanged_Tick(object sender, EventArgs e)
+        {
+
+            timer_TextChanged.Stop();
             if (EventEnable == false) { return; }
             EventEnable = false;
             {
@@ -70,6 +84,7 @@ namespace LetterBordering
             EventEnable = true;
 
         }
+
 
         private void textBox_InputText_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {

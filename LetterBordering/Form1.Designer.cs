@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             pictureBox_Preview = new PictureBox();
             textBox_InputText = new TextBox();
             listView_TextSet = new ListView();
@@ -74,6 +75,7 @@
             label3 = new Label();
             label_StringImageSize = new Label();
             label_ImageSize = new Label();
+            timer_TextChanged = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)pictureBox_Preview).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -602,6 +604,11 @@
             label_ImageSize.TabIndex = 23;
             label_ImageSize.Text = "0000 × 0000";
             // 
+            // timer_TextChanged
+            // 
+            timer_TextChanged.Interval = 50;
+            timer_TextChanged.Tick += timer_TextChanged_Tick;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -687,5 +694,6 @@
         private Button button_OutputAll;
         private Button button_OpenFolder;
         private CheckBox checkBox_Centering;
+        private System.Windows.Forms.Timer timer_TextChanged;
     }
 }
