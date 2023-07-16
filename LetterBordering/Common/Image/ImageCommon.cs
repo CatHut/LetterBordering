@@ -26,7 +26,7 @@ namespace CatHut
             return resultSize;
         }
 
-        public static Image MarginRemove(Bitmap img, int alpha)
+        public static Bitmap MarginRemove(Bitmap img, int alpha)
         {
             // 余白を検出するための最小値
             int minX = img.Width;
@@ -85,13 +85,13 @@ namespace CatHut
             return newImg;
         }
 
-        private static Image CreateErrorImage()
+        private static Bitmap CreateErrorImage()
         {
             // フォントとフォントスタイルを指定する
             Font font = new Font("Arial", 8, FontStyle.Bold);
 
             // Imageオブジェクトを作成する
-            Image img = new Bitmap(200, 100);
+            Bitmap img = new Bitmap(200, 100);
 
             // usingステートメントを使用してGraphicsオブジェクトを作成する
             using (Graphics g = Graphics.FromImage(img))

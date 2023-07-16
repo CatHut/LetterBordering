@@ -94,7 +94,7 @@ namespace LetterBordering
 
         }
 
-        private Image CreateImage()
+        private Bitmap CreateImage()
         {
 
             var idx = PM.AsProject.Settings.SelectedTextIndex;
@@ -187,7 +187,7 @@ namespace LetterBordering
             g.FillPath(brush, path);
 
             //マージン削除
-            Image noMargin = ImageCommon.MarginRemove(image, 0);
+            Bitmap noMargin = ImageCommon.MarginRemove(image, 0);
 
             //オブジェクトを破棄する
             ReleaseDisposable();
@@ -200,9 +200,29 @@ namespace LetterBordering
         private void UpdateImage()
         {
 
-            var image = CreateImage();
+            var bmp = CreateImage();
 
-            Graphics g = Graphics.FromImage(image);
+
+            //画像サイズ調整
+            var idx = PM.AsProject.Settings.SelectedTextIndex;
+            var textInfo = PM.AsProject.Settings.TextInfoDic[idx];
+            if (textInfo.ImageSizeX != 0 && textInfo.ImageSizeY != 0)
+            {
+                Bitmap resizeBmp = new Bitmap(textInfo.ImageSizeX, textInfo.ImageSizeY, PixelFormat.Format32bppPArgb);
+
+                using (Graphics tempG = Graphics.FromImage(resizeBmp))
+                {
+                    tempG.DrawImage(bmp, new Point(textInfo.OffsetX, textInfo.OffsetY));
+                }
+
+                bmp.Dispose();
+                bmp = resizeBmp;
+            }
+
+            //保存はここでする。
+
+
+            Graphics g = Graphics.FromImage(bmp);
             PushDisporsable(g);
 
             // 黒色のペンを作成する
@@ -210,7 +230,7 @@ namespace LetterBordering
             PushDisporsable(pen);
 
             // 画像の端から1ピクセル内側に矩形を描画する
-            g.DrawRectangle(pen, 0, 0, image.Width - 1, image.Height - 1);
+            g.DrawRectangle(pen, 0, 0, bmp.Width - 1, bmp.Height - 1);
 
             //前回のBitmapオブジェクトをDisposeする
             if (pictureBox_Preview.Image != null)
@@ -219,7 +239,7 @@ namespace LetterBordering
             }
 
             //ピクチャボックスに設定
-            pictureBox_Preview.Image = image;
+            pictureBox_Preview.Image = bmp;
 
             ReleaseDisposable();
 
@@ -264,6 +284,16 @@ namespace LetterBordering
             PM.AsProject.Settings.TextInfoDic[idx].Bold = checkBox_Bold.Checked;
             PM.AsProject.Settings.TextInfoDic[idx].Italic = checkBox_Italic.Checked;
 
+            PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX = (int)numericUpDown_ImageWidth.Value;
+            PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY = (int)numericUpDown_ImageHeight.Value;
+            PM.AsProject.Settings.TextInfoDic[idx].OffsetX = (int)numericUpDown_OffsetX.Value;
+            PM.AsProject.Settings.TextInfoDic[idx].OffsetY = (int)numericUpDown_OffsetY.Value;
+
+            PM.AsProject.Settings.TextInfoDic[idx].CenterBaseX = checkBox_CenterBaseX.Checked;
+            PM.AsProject.Settings.TextInfoDic[idx].CenterBaseY = checkBox_CenterBaseY.Checked;
+            PM.AsProject.Settings.TextInfoDic[idx].AutoCenterX = checkBox_AutoCenterX.Checked;
+            PM.AsProject.Settings.TextInfoDic[idx].AutoCenterY = checkBox_AutoCenterY.Checked;
+
             PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0] = new DecorationInfo();
             PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0].Thick = (int)numericUpDown_Size01.Value; //縁取り１太さ
             PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0].Color = Color.Red; //縁取り１色;
@@ -285,16 +315,26 @@ namespace LetterBordering
             var idx = PM.AsProject.Settings.SelectedTextIndex;
             listView_TextSet.SelectedIndices.Add(idx);
 
+            //画像補正
+            numericUpDown_ImageWidth.Value = PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX;
+            numericUpDown_ImageHeight.Value = PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY;
+            numericUpDown_OffsetX.Value = PM.AsProject.Settings.TextInfoDic[idx].OffsetX;
+            numericUpDown_OffsetY.Value = PM.AsProject.Settings.TextInfoDic[idx].OffsetY;
+
+            checkBox_CenterBaseX.Checked = PM.AsProject.Settings.TextInfoDic[idx].CenterBaseX;
+            checkBox_CenterBaseY.Checked = PM.AsProject.Settings.TextInfoDic[idx].CenterBaseY;
+            checkBox_AutoCenterX.Checked = PM.AsProject.Settings.TextInfoDic[idx].AutoCenterX;
+            checkBox_AutoCenterY.Checked = PM.AsProject.Settings.TextInfoDic[idx].AutoCenterY;
+
             comboBox_Font.Text = PM.AsProject.Settings.TextInfoDic[idx].FontName;
+            numericUpDown_FontSize.Value = PM.AsProject.Settings.TextInfoDic[idx].FontSize;
             checkBox_Bold.Checked = PM.AsProject.Settings.TextInfoDic[idx].Bold;
             checkBox_Italic.Checked = PM.AsProject.Settings.TextInfoDic[idx].Italic;
-            numericUpDown_FontSize.Value = PM.AsProject.Settings.TextInfoDic[idx].FontSize;
-            textBox_InputText.Text = PM.AsProject.Settings.TextInfoDic[idx].Text;
+
+            textBox_InputText.Text = PM.AsProject.Settings.TextInfoDic[idx].Text.Replace("\n", Environment.NewLine);
 
             //装飾
             numericUpDown_Size01.Value = PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0].Thick;
-
-
             numericUpDown_Size02.Value = PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[1].Thick;
 
         }
@@ -472,6 +512,9 @@ namespace LetterBordering
             EventEnable = true;
         }
 
+        private void button_ImageSizeClear_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 }
