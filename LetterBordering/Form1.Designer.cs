@@ -234,6 +234,7 @@
             button_OpenFolder.TabIndex = 32;
             button_OpenFolder.Text = "出力先開く";
             button_OpenFolder.UseVisualStyleBackColor = true;
+            button_OpenFolder.Click += button_OpenFolder_Click;
             // 
             // button_Output
             // 
@@ -243,6 +244,7 @@
             button_Output.TabIndex = 31;
             button_Output.Text = "画像出力";
             button_Output.UseVisualStyleBackColor = true;
+            button_Output.Click += button_Output_Click;
             // 
             // button_OutputAll
             // 
@@ -252,6 +254,7 @@
             button_OutputAll.TabIndex = 30;
             button_OutputAll.Text = "全画像出力";
             button_OutputAll.UseVisualStyleBackColor = true;
+            button_OutputAll.Click += button_OutputAll_Click;
             // 
             // button_Up
             // 

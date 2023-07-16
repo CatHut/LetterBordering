@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using CatHut;
 using System.Diagnostics;
+using System.IO;
 
 namespace LetterBordering
 {
@@ -15,11 +16,8 @@ namespace LetterBordering
     {
         HashSet<IDisposable> DisposablesList;
         Dictionary<string, FontFamily> FontFamilyDic;
-
         ProjectManager PM;
-
         bool EventEnable = true;
-        DateTime TestTime;
 
 
 
@@ -62,14 +60,11 @@ namespace LetterBordering
         private void textBox_InputText_TextChanged(object sender, EventArgs e)
         {
 
-            var ts = DateTime.Now - TestTime;
-            TestTime = DateTime.Now;
-            Debug.WriteLine(ts.TotalSeconds);
-
             timer_TextChanged.Stop();
             timer_TextChanged.Start();
 
         }
+
         private void timer_TextChanged_Tick(object sender, EventArgs e)
         {
 
@@ -127,10 +122,8 @@ namespace LetterBordering
 
         }
 
-        private Bitmap CreateImage()
+        private Bitmap CreateImage(int idx)
         {
-
-            var idx = PM.AsProject.Settings.SelectedTextIndex;
             var textInfo = PM.AsProject.Settings.TextInfoDic[idx];
 
             var text = textInfo.Text;
@@ -239,8 +232,9 @@ namespace LetterBordering
 
         private void UpdateImage()
         {
+            var idx = PM.AsProject.Settings.SelectedTextIndex;
 
-            var bmp = CreateImage();
+            var bmp = CreateImage(idx);
             Rectangle? destRect = null;
 
             //サイズ表示更新
@@ -248,7 +242,6 @@ namespace LetterBordering
 
 
             //画像サイズ調整
-            var idx = PM.AsProject.Settings.SelectedTextIndex;
             var textInfo = PM.AsProject.Settings.TextInfoDic[idx];
             if (textInfo.ImageSizeX != 0 && textInfo.ImageSizeY != 0)
             {
@@ -340,6 +333,67 @@ namespace LetterBordering
             ReleaseDisposable();
 
         }
+
+        private void SaveImage(int idx)
+        {
+
+            var bmp = CreateImage(idx);
+            Rectangle? destRect = null;
+
+            //画像サイズ調整
+            var textInfo = PM.AsProject.Settings.TextInfoDic[idx];
+            if (textInfo.ImageSizeX != 0 && textInfo.ImageSizeY != 0)
+            {
+                Bitmap resizeBmp = new Bitmap(textInfo.ImageSizeX, textInfo.ImageSizeY, PixelFormat.Format32bppPArgb);
+
+                using (Graphics tempG = Graphics.FromImage(resizeBmp))
+                {
+                    var xy = CalcOffset(bmp, resizeBmp);
+                    var src_x = 0;
+                    var src_y = 0;
+                    var src_w = bmp.Width;
+                    var src_h = bmp.Height;
+
+                    var dest_x = xy.Width;
+                    var dest_y = xy.Height;
+
+                    if (xy.Width < 0)
+                    {
+                        src_x = Math.Abs(xy.Width);
+                        src_w = src_w - src_x;
+                        dest_x = 0;
+                    }
+
+                    if (xy.Height < 0)
+                    {
+                        src_y = Math.Abs(xy.Height);
+                        src_h = src_h - src_y;
+                        dest_y = 0;
+                    }
+                    Rectangle srcRect = new Rectangle(src_x, src_y, src_w, src_h);
+                    destRect = new Rectangle(dest_x, dest_y, src_w, src_h);
+                    tempG.DrawImage(bmp, (Rectangle)destRect, srcRect, GraphicsUnit.Pixel);
+                }
+
+                bmp.Dispose();
+                bmp = resizeBmp;
+            }
+
+            var path = @"Output\" + PM.AsProject.Settings.Name;
+
+            //保存はここでする。
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            var file = path + @"\" + idx.ToString("D4") + ".png";
+            bmp.Save(file, ImageFormat.Png);
+            bmp.Dispose();
+
+        }
+
+
 
         private Size CalcOffset(Bitmap str, Bitmap bmp)
         {
@@ -790,6 +844,23 @@ namespace LetterBordering
             CommonUpdate();
         }
 
+        private void button_Output_Click(object sender, EventArgs e)
+        {
+            SaveImage(PM.AsProject.Settings.SelectedTextIndex);
+        }
 
+        private void button_OpenFolder_Click(object sender, EventArgs e)
+        {
+            var path = @"Output\" + PM.AsProject.Settings.Name;
+            Process.Start("explorer.exe", path);
+        }
+
+        private void button_OutputAll_Click(object sender, EventArgs e)
+        {
+            foreach (var idx in PM.AsProject.Settings.TextInfoDic.Keys)
+            {
+                SaveImage(idx);
+            }
+        }
     }
 }
