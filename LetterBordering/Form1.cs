@@ -6,6 +6,7 @@ using System.Drawing.Text;
 using System.Linq.Expressions;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using CatHut;
 
 namespace LetterBordering
 {
@@ -110,17 +111,18 @@ namespace LetterBordering
 
 
             // テキストのサイズを計算する
-            SizeF textSize = MeasureString(text, font);
+            Size textSize = ImageCommon.MeasureString(text, font);
 
             // 画像のサイズを決める（余白を含む）
             int margin = 0 + outline1Width + outline2Width;
-            int width = Math.Max(1,(int)Math.Ceiling(textSize.Width) + margin * 2);
-            int height = Math.Max(1, (int)Math.Ceiling(textSize.Height) + margin * 2);
+            int width = Math.Max(1, textSize.Width + margin * 2);
+            int height = Math.Max(1, textSize.Height + margin * 2);
 
-            label_ImageSize.Text = width.ToString().PadLeft(4) + "×" + height.ToString().PadLeft(4);
+            label_StringImageSize.Text = width.ToString().PadLeft(4) + "×" + height.ToString().PadLeft(4);
 
             // 画像を作成する
             Bitmap image = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            PushDisporsable(image);
 
             // Graphicsオブジェクトを作成する
             Graphics g = Graphics.FromImage(image);
@@ -184,10 +186,14 @@ namespace LetterBordering
             PushDisporsable(brush);
             g.FillPath(brush, path);
 
-            // オブジェクトを破棄する
+            //マージン削除
+            Image noMargin = ImageCommon.MarginRemove(image, 0);
+
+            //オブジェクトを破棄する
             ReleaseDisposable();
 
-            return image;
+            //return textSize;
+            return noMargin;
         }
 
 
@@ -308,21 +314,6 @@ namespace LetterBordering
         }
 
 
-
-        public static SizeF MeasureString(string text, Font font)
-        {
-
-            Bitmap image = new Bitmap(1, 1);
-            Graphics g = Graphics.FromImage(image);
-            StringFormat sf = StringFormat.GenericTypographic;
-            SizeF size = g.MeasureString(text, font, int.MaxValue, sf);
-
-            //SizeF size = TextRenderer.MeasureText(g, text, font, new Size(1000, 1000), TextFormatFlags.NoPadding);
-            g.Dispose();
-            image.Dispose();
-            return size;
-
-        }
 
         public void PushDisporsable(IDisposable disposable)
         {

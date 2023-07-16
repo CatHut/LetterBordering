@@ -38,7 +38,7 @@
             comboBox_Project = new ComboBox();
             splitContainer1 = new SplitContainer();
             button_CreateProject = new Button();
-            label_ImageSize = new Label();
+            label_StringImageSize = new Label();
             label2 = new Label();
             label1 = new Label();
             button_ImageSizeClear = new Button();
@@ -55,6 +55,11 @@
             checkBox_Bold = new CheckBox();
             comboBox_Font = new ComboBox();
             colorDialog = new ColorDialog();
+            label_ImageSize = new Label();
+            label3 = new Label();
+            label4 = new Label();
+            numericUpDown1 = new NumericUpDown();
+            numericUpDown2 = new NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Preview).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -65,10 +70,13 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown_FontSize).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_Size02).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_Size01).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
             SuspendLayout();
             // 
             // pictureBox_Preview
             // 
+            pictureBox_Preview.BorderStyle = BorderStyle.FixedSingle;
             pictureBox_Preview.Location = new Point(862, 76);
             pictureBox_Preview.Name = "pictureBox_Preview";
             pictureBox_Preview.Size = new Size(470, 485);
@@ -77,7 +85,7 @@
             // 
             // textBox_InputText
             // 
-            textBox_InputText.Location = new Point(223, 125);
+            textBox_InputText.Location = new Point(223, 174);
             textBox_InputText.Multiline = true;
             textBox_InputText.Name = "textBox_InputText";
             textBox_InputText.Size = new Size(566, 110);
@@ -146,7 +154,12 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(numericUpDown1);
+            splitContainer1.Panel2.Controls.Add(numericUpDown2);
+            splitContainer1.Panel2.Controls.Add(label4);
+            splitContainer1.Panel2.Controls.Add(label3);
             splitContainer1.Panel2.Controls.Add(label_ImageSize);
+            splitContainer1.Panel2.Controls.Add(label_StringImageSize);
             splitContainer1.Panel2.Controls.Add(label2);
             splitContainer1.Panel2.Controls.Add(label1);
             splitContainer1.Panel2.Controls.Add(button_ImageSizeClear);
@@ -181,14 +194,14 @@
             button_CreateProject.UseVisualStyleBackColor = true;
             button_CreateProject.Click += button_CreateProject_Click;
             // 
-            // label_ImageSize
+            // label_StringImageSize
             // 
-            label_ImageSize.AutoSize = true;
-            label_ImageSize.Location = new Point(862, 47);
-            label_ImageSize.Name = "label_ImageSize";
-            label_ImageSize.Size = new Size(69, 15);
-            label_ImageSize.TabIndex = 22;
-            label_ImageSize.Text = "0000 × 0000";
+            label_StringImageSize.AutoSize = true;
+            label_StringImageSize.Location = new Point(923, 47);
+            label_StringImageSize.Name = "label_StringImageSize";
+            label_StringImageSize.Size = new Size(69, 15);
+            label_StringImageSize.TabIndex = 22;
+            label_StringImageSize.Text = "0000 × 0000";
             // 
             // label2
             // 
@@ -210,7 +223,7 @@
             // 
             // button_ImageSizeClear
             // 
-            button_ImageSizeClear.Location = new Point(488, 39);
+            button_ImageSizeClear.Location = new Point(721, 39);
             button_ImageSizeClear.Name = "button_ImageSizeClear";
             button_ImageSizeClear.Size = new Size(68, 23);
             button_ImageSizeClear.TabIndex = 19;
@@ -224,6 +237,7 @@
             numericUpDown_ImageHeight.Name = "numericUpDown_ImageHeight";
             numericUpDown_ImageHeight.Size = new Size(75, 23);
             numericUpDown_ImageHeight.TabIndex = 18;
+            numericUpDown_ImageHeight.Value = new decimal(new int[] { 1080, 0, 0, 0 });
             numericUpDown_ImageHeight.ValueChanged += numericUpDown_ImageHeight_ValueChanged;
             // 
             // numericUpDown_ImageWidth
@@ -233,11 +247,12 @@
             numericUpDown_ImageWidth.Name = "numericUpDown_ImageWidth";
             numericUpDown_ImageWidth.Size = new Size(75, 23);
             numericUpDown_ImageWidth.TabIndex = 17;
+            numericUpDown_ImageWidth.Value = new decimal(new int[] { 1920, 0, 0, 0 });
             numericUpDown_ImageWidth.ValueChanged += numericUpDown_ImageWidth_ValueChanged;
             // 
             // numericUpDown_FontSize
             // 
-            numericUpDown_FontSize.Location = new Point(418, 96);
+            numericUpDown_FontSize.Location = new Point(418, 145);
             numericUpDown_FontSize.Name = "numericUpDown_FontSize";
             numericUpDown_FontSize.Size = new Size(56, 23);
             numericUpDown_FontSize.TabIndex = 16;
@@ -266,7 +281,7 @@
             // 
             // numericUpDown_Size02
             // 
-            numericUpDown_Size02.Location = new Point(223, 384);
+            numericUpDown_Size02.Location = new Point(223, 433);
             numericUpDown_Size02.Name = "numericUpDown_Size02";
             numericUpDown_Size02.Size = new Size(75, 23);
             numericUpDown_Size02.TabIndex = 13;
@@ -275,7 +290,7 @@
             // 
             // numericUpDown_Size01
             // 
-            numericUpDown_Size01.Location = new Point(223, 285);
+            numericUpDown_Size01.Location = new Point(223, 334);
             numericUpDown_Size01.Name = "numericUpDown_Size01";
             numericUpDown_Size01.Size = new Size(75, 23);
             numericUpDown_Size01.TabIndex = 12;
@@ -284,7 +299,7 @@
             // 
             // button_Color02
             // 
-            button_Color02.Location = new Point(308, 384);
+            button_Color02.Location = new Point(308, 433);
             button_Color02.Name = "button_Color02";
             button_Color02.Size = new Size(75, 23);
             button_Color02.TabIndex = 11;
@@ -293,7 +308,7 @@
             // 
             // button_Color01
             // 
-            button_Color01.Location = new Point(308, 283);
+            button_Color01.Location = new Point(308, 332);
             button_Color01.Name = "button_Color01";
             button_Color01.Size = new Size(75, 23);
             button_Color01.TabIndex = 10;
@@ -303,7 +318,7 @@
             // checkBox_Italic
             // 
             checkBox_Italic.AutoSize = true;
-            checkBox_Italic.Location = new Point(544, 100);
+            checkBox_Italic.Location = new Point(544, 149);
             checkBox_Italic.Name = "checkBox_Italic";
             checkBox_Italic.Size = new Size(50, 19);
             checkBox_Italic.TabIndex = 9;
@@ -314,7 +329,7 @@
             // checkBox_Bold
             // 
             checkBox_Bold.AutoSize = true;
-            checkBox_Bold.Location = new Point(488, 100);
+            checkBox_Bold.Location = new Point(488, 149);
             checkBox_Bold.Name = "checkBox_Bold";
             checkBox_Bold.Size = new Size(50, 19);
             checkBox_Bold.TabIndex = 8;
@@ -325,7 +340,7 @@
             // comboBox_Font
             // 
             comboBox_Font.FormattingEnabled = true;
-            comboBox_Font.Location = new Point(223, 96);
+            comboBox_Font.Location = new Point(223, 145);
             comboBox_Font.Name = "comboBox_Font";
             comboBox_Font.Size = new Size(177, 23);
             comboBox_Font.TabIndex = 7;
@@ -335,6 +350,51 @@
             // colorDialog
             // 
             colorDialog.FullOpen = true;
+            // 
+            // label_ImageSize
+            // 
+            label_ImageSize.AutoSize = true;
+            label_ImageSize.Location = new Point(923, 21);
+            label_ImageSize.Name = "label_ImageSize";
+            label_ImageSize.Size = new Size(69, 15);
+            label_ImageSize.TabIndex = 23;
+            label_ImageSize.Text = "0000 × 0000";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(862, 47);
+            label3.Name = "label3";
+            label3.Size = new Size(55, 15);
+            label3.TabIndex = 24;
+            label3.Text = "文字部分";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(862, 21);
+            label4.Name = "label4";
+            label4.Size = new Size(59, 15);
+            label4.TabIndex = 25;
+            label4.Text = "画像サイズ";
+            // 
+            // numericUpDown1
+            // 
+            numericUpDown1.Location = new Point(248, 105);
+            numericUpDown1.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+            numericUpDown1.Name = "numericUpDown1";
+            numericUpDown1.Size = new Size(75, 23);
+            numericUpDown1.TabIndex = 27;
+            numericUpDown1.Value = new decimal(new int[] { 1080, 0, 0, 0 });
+            // 
+            // numericUpDown2
+            // 
+            numericUpDown2.Location = new Point(248, 76);
+            numericUpDown2.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+            numericUpDown2.Name = "numericUpDown2";
+            numericUpDown2.Size = new Size(75, 23);
+            numericUpDown2.TabIndex = 26;
+            numericUpDown2.Value = new decimal(new int[] { 1920, 0, 0, 0 });
             // 
             // Form1
             // 
@@ -356,6 +416,8 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown_FontSize).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_Size02).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_Size01).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
             ResumeLayout(false);
         }
 
@@ -386,6 +448,11 @@
         private Button button_ImageSizeClear;
         private NumericUpDown numericUpDown_ImageHeight;
         private NumericUpDown numericUpDown_ImageWidth;
+        private Label label_StringImageSize;
+        private NumericUpDown numericUpDown1;
+        private NumericUpDown numericUpDown2;
+        private Label label4;
+        private Label label3;
         private Label label_ImageSize;
     }
 }
