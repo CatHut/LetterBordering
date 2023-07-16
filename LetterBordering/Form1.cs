@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using CatHut;
+using System.Diagnostics;
 
 namespace LetterBordering
 {
@@ -69,6 +70,22 @@ namespace LetterBordering
             EventEnable = true;
 
         }
+
+        private void textBox_InputText_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            //Debug.WriteLine(e.KeyValue.ToString());
+            //Debug.WriteLine(e.KeyData.ToString());
+            //Debug.WriteLine(e.KeyCode.ToString());
+
+            //if (EventEnable == false) { return; }
+            //EventEnable = false;
+            //{
+
+
+            //}
+            //EventEnable = true;
+        }
+
 
         private void numericUpDown_Size01_ValueChanged(object sender, EventArgs e)
         {
@@ -757,5 +774,7 @@ namespace LetterBordering
             EventEnable = true;
             CommonUpdate();
         }
+
+
     }
 }

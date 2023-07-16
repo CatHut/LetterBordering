@@ -117,10 +117,12 @@
             textBox_InputText.TabIndex = 2;
             textBox_InputText.Text = "テスト文字\r\nabcdefghijklmn\r\n漢字\r\nひらがな\r\nカタカナ\r\nﾊﾝｶｸﾓｼﾞ";
             textBox_InputText.TextChanged += textBox_InputText_TextChanged;
+            textBox_InputText.PreviewKeyDown += textBox_InputText_PreviewKeyDown;
             // 
             // listView_TextSet
             // 
             listView_TextSet.Columns.AddRange(new ColumnHeader[] { columnHeader_No, columnHeader_Text });
+            listView_TextSet.FullRowSelect = true;
             listView_TextSet.HeaderStyle = ColumnHeaderStyle.Nonclickable;
             listView_TextSet.Location = new Point(13, 49);
             listView_TextSet.Name = "listView_TextSet";
