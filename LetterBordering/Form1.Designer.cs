@@ -166,6 +166,7 @@
             comboBox_Project.Name = "comboBox_Project";
             comboBox_Project.Size = new Size(177, 23);
             comboBox_Project.TabIndex = 6;
+            comboBox_Project.SelectedValueChanged += comboBox_Project_SelectedValueChanged;
             // 
             // splitContainer1
             // 

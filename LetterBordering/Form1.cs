@@ -408,8 +408,8 @@ namespace LetterBordering
         public void UpdateUiValues()
         {
             comboBox_Project.Items.Clear();
-            comboBox_Project.Text = PM.AsProject.Settings.Name;
             comboBox_Project.Items.AddRange(PM.GetProjectList().ToArray());
+            comboBox_Project.Text = PM.AsProject.Settings.Name;
             SetTextSetListViewItems();
 
             var idx = PM.AsProject.Settings.SelectedTextIndex;
@@ -563,6 +563,7 @@ namespace LetterBordering
                 UpdateUiValues();
             }
             EventEnable = true;
+            CommonUpdate();
         }
 
         private void button_Create_Click(object sender, EventArgs e)
@@ -742,6 +743,18 @@ namespace LetterBordering
             }
             EventEnable = true;
 
+            CommonUpdate();
+        }
+
+        private void comboBox_Project_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (EventEnable == false) { return; }
+            EventEnable = false;
+            {
+                PM.LoadProjectByName(comboBox_Project.Text);
+                UpdateUiValues();
+            }
+            EventEnable = true;
             CommonUpdate();
         }
     }
