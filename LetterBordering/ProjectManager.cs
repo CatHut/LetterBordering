@@ -1,4 +1,5 @@
-﻿using LetterBordering.Setting;
+﻿using CatHut;
+using LetterBordering.Setting;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -255,6 +256,12 @@ namespace LetterBordering
             AddDeco();
             AddDeco();
 
+        }
+
+        public void CopyText(int idx)
+        {
+            var key = AsProject.Settings.TextInfoDic.Count;
+            AsProject.Settings.TextInfoDic[key] = CatHutCommon.DeepClone<TextInfo>(AsProject.Settings.TextInfoDic[idx]);
         }
 
         public void AddDeco()

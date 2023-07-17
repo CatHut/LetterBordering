@@ -84,6 +84,7 @@
             label_StringImageSize = new Label();
             label_ImageSize = new Label();
             timer_TextChanged = new System.Windows.Forms.Timer(components);
+            button_Copy = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Preview).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -159,7 +160,7 @@
             // 
             button_Create.Location = new Point(13, 20);
             button_Create.Name = "button_Create";
-            button_Create.Size = new Size(67, 23);
+            button_Create.Size = new Size(50, 23);
             button_Create.TabIndex = 4;
             button_Create.Text = "作成";
             button_Create.UseVisualStyleBackColor = true;
@@ -167,12 +168,13 @@
             // 
             // button_Delete
             // 
-            button_Delete.Location = new Point(94, 20);
+            button_Delete.Location = new Point(115, 20);
             button_Delete.Name = "button_Delete";
-            button_Delete.Size = new Size(68, 23);
+            button_Delete.Size = new Size(47, 23);
             button_Delete.TabIndex = 5;
             button_Delete.Text = "削除";
             button_Delete.UseVisualStyleBackColor = true;
+            button_Delete.Click += button_Delete_Click;
             // 
             // comboBox_Project
             // 
@@ -220,6 +222,7 @@
             // 
             // splitContainer2.Panel1
             // 
+            splitContainer2.Panel1.Controls.Add(button_Copy);
             splitContainer2.Panel1.Controls.Add(button_OpenFolder);
             splitContainer2.Panel1.Controls.Add(button_Output);
             splitContainer2.Panel1.Controls.Add(button_OutputAll);
@@ -722,6 +725,16 @@
             timer_TextChanged.Interval = 50;
             timer_TextChanged.Tick += timer_TextChanged_Tick;
             // 
+            // button_Copy
+            // 
+            button_Copy.Location = new Point(62, 20);
+            button_Copy.Name = "button_Copy";
+            button_Copy.Size = new Size(47, 23);
+            button_Copy.TabIndex = 31;
+            button_Copy.Text = "コピー";
+            button_Copy.UseVisualStyleBackColor = true;
+            button_Copy.Click += button_Copy_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -821,5 +834,6 @@
         private RadioButton radioButton_RightBase;
         private RadioButton radioButton_CenterBaseX;
         private GroupBox groupBox_BasePoint;
+        private Button button_Copy;
     }
 }

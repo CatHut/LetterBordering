@@ -167,10 +167,7 @@ namespace LetterBordering
 
             // GraphicsPathオブジェクトを作成する
             GraphicsPath path = new GraphicsPath();
-            GraphicsPath path1 = new GraphicsPath();
-            GraphicsPath path2;
             PushDisporsable(path);
-            PushDisporsable(path1);
 
             //パスを作成する
             // テキストの輪郭を追加する
@@ -183,46 +180,58 @@ namespace LetterBordering
             }
 
             path.AddString(text, font.FontFamily, (int)font.Style, font.Size, point, sf);
-            path1.AddString(text, font.FontFamily, (int)font.Style, font.Size, point, sf);
+
+            //Pen pen_test = new Pen(Color.White, 10);
+            //PushDisporsable(pen_test);
+
 
             //ペンを作成する
             // 縁取り２ペンを作成する
-            Pen pen2 = new Pen(outline2Color.ToColor(), outline2Width);
+            Pen pen2 = new Pen(outline2Color.ToColor(), (outline2Width + outline1Width) * 2);
+            Pen pen2_thin = new Pen(outline2Color.ToColor(), (outline2Width + outline1Width));
             PushDisporsable(pen2);
+            PushDisporsable(pen2_thin);
             pen2.LineJoin = LineJoin.Round;
+            pen2_thin.LineJoin = LineJoin.Round;
 
             // 縁取り１ペンを作成する
-            Pen pen1 = new Pen(outline1Color.ToColor(), outline1Width);
+            Pen pen1 = new Pen(outline1Color.ToColor(), outline1Width * 2);
+            Pen pen1_thin = new Pen(outline1Color.ToColor(), outline1Width);
             PushDisporsable(pen1);
+            PushDisporsable(pen1_thin);
             pen1.LineJoin = LineJoin.Round;
+            pen1_thin.LineJoin = LineJoin.Round;
 
-            //パスを補正
-            path1.Widen(pen1);
-
-            path2 = (GraphicsPath)path1.Clone();
-            PushDisporsable(path2);
-            path2.Widen(pen2);
 
             //描画する
             if (outline2Width > 0)
             {
                 Brush brush2 = new SolidBrush(outline2Color.ToColor());
-                g.FillPath(brush2, path2);
+                g.DrawPath(pen2, path);
+                g.DrawPath(pen2_thin, path);
+                g.FillPath(brush2, path);
                 brush2.Dispose();
             }
 
             if (outline1Width > 0)
             {
                 Brush brush1 = new SolidBrush(outline1Color.ToColor());
-                g.FillPath(brush1, path1);
+                g.DrawPath(pen1, path);
+                g.DrawPath(pen1_thin, path);
+                //g.DrawPath(pen_test, path);
+                g.FillPath(brush1, path);
                 brush1.Dispose();
             }
-
 
             // テキストを塗りつぶす
             Brush brush = new SolidBrush(textInfo.BaseColor.ToColor());
             PushDisporsable(brush);
             g.FillPath(brush, path);
+            //g.DrawPath(pen_test, path);
+
+            //Brush brush_test = new SolidBrush(textInfo.BaseColor.ToColor());
+            //g.FillPath(brush_test, path);
+
 
             //マージン削除
             Bitmap noMargin = ImageCommon.MarginRemove(image, 0);
@@ -1114,6 +1123,51 @@ namespace LetterBordering
             EventEnable = true;
 
             CommonUpdate();
+        }
+
+        private void button_Delete_Click(object sender, EventArgs e)
+        {
+            if (EventEnable == false) { return; }
+            EventEnable = false;
+            {
+                var deleteList = listView_TextSet.SelectedItems;
+                foreach (ListViewItem item in deleteList)
+                {
+                    PM.AsProject.Settings.TextInfoDic.Remove(item.Index);
+                }
+
+                var tempDic = new SerializableSortedDictionary<int, TextInfo>();
+
+                //キー振り直し
+                var i = 0;
+                foreach (var ti in PM.AsProject.Settings.TextInfoDic)
+                {
+                    tempDic.Add(i++, ti.Value);
+                }
+                PM.AsProject.Settings.TextInfoDic = tempDic;
+                PM.AsProject.Settings.SelectedTextIndex = 0;
+                UpdateUiValues();
+
+            }
+            EventEnable = true;
+
+            CommonUpdate();
+        }
+
+        private void button_Copy_Click(object sender, EventArgs e)
+        {
+            if(listView_TextSet.SelectedItems.Count == 0) { return; }
+
+            if (EventEnable == false) { return; }
+            EventEnable = false;
+            {
+                PM.CopyText(listView_TextSet.SelectedItems[0].Index);
+                UpdateUiValues();
+            }
+            EventEnable = true;
+
+            CommonUpdate();
+
         }
     }
 }
