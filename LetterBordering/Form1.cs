@@ -545,35 +545,35 @@ namespace LetterBordering
             switch (PM.AsProject.Settings.TextInfoDic[idx].ResolutionIndex)
             {
                 case RESOLUTION_INDEX.NONE:
-                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.NONE].Width;
-                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.NONE].Height;
+                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.NONE].Width;
+                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.NONE].Height;
                     break;
                 case RESOLUTION_INDEX.MANUAL:
                     //‚È‚É‚à‚µ‚È‚¢
                     break;
                 case RESOLUTION_INDEX.VGA:
-                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.VGA].Width;
-                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.VGA].Height;
+                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.VGA].Width;
+                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.VGA].Height;
                     break;
                 case RESOLUTION_INDEX.SDTB:
-                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.SDTB].Width;
-                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.SDTB].Height;
+                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.SDTB].Width;
+                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.SDTB].Height;
                     break;
                 case RESOLUTION_INDEX.HDTV:
-                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.HDTV].Width;
-                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.HDTV].Height;
+                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.HDTV].Width;
+                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.HDTV].Height;
                     break;
                 case RESOLUTION_INDEX.FHD_2K:
-                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.FHD_2K].Width;
-                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.FHD_2K].Height;
+                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.FHD_2K].Width;
+                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.FHD_2K].Height;
                     break;
                 case RESOLUTION_INDEX.WQHD:
-                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.WQHD].Width;
-                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.WQHD].Height;
+                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.WQHD].Width;
+                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.WQHD].Height;
                     break;
                 case RESOLUTION_INDEX.UHD_4K:
-                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.UHD_4K].Width;
-                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.UHD_4K].Height;
+                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.UHD_4K].Width;
+                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.UHD_4K].Height;
                     break;
             }
 
@@ -671,6 +671,7 @@ namespace LetterBordering
 
             checkBox_AutoCenterX.Checked = PM.AsProject.Settings.TextInfoDic[idx].AutoCenterX;
             checkBox_AutoCenterY.Checked = PM.AsProject.Settings.TextInfoDic[idx].AutoCenterY;
+            comboBox_Resolution.SelectedIndex = (int)PM.AsProject.Settings.TextInfoDic[idx].ResolutionIndex;
 
             comboBox_Font.Text = PM.AsProject.Settings.TextInfoDic[idx].FontName;
             numericUpDown_FontSize.Value = PM.AsProject.Settings.TextInfoDic[idx].FontSize;
@@ -688,6 +689,8 @@ namespace LetterBordering
             button_Color00.BackColor = PM.AsProject.Settings.TextInfoDic[idx].BaseColor.ToColor();
             button_Color01.BackColor = PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0].Color.ToColor();
             button_Color02.BackColor = PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[1].Color.ToColor();
+
+
 
         }
 
@@ -1071,11 +1074,47 @@ namespace LetterBordering
             if (EventEnable == false) { return; }
             EventEnable = false;
             {
+                var idx = PM.AsProject.Settings.SelectedTextIndex;
 
+                PM.AsProject.Settings.TextInfoDic[idx].ResolutionIndex = (RESOLUTION_INDEX)comboBox_Resolution.SelectedIndex;
+
+                switch (PM.AsProject.Settings.TextInfoDic[idx].ResolutionIndex)
+                {
+                    case RESOLUTION_INDEX.NONE:
+                        numericUpDown_ImageWidth.Value = ImageCommon.ResolutionDic[RESOLUTION_INDEX.NONE].Width;
+                        numericUpDown_ImageHeight.Value = ImageCommon.ResolutionDic[RESOLUTION_INDEX.NONE].Height;
+                        break;
+                    case RESOLUTION_INDEX.MANUAL:
+                        //‚È‚É‚à‚µ‚È‚¢
+                        break;
+                    case RESOLUTION_INDEX.VGA:
+                        numericUpDown_ImageWidth.Value = ImageCommon.ResolutionDic[RESOLUTION_INDEX.VGA].Width;
+                        numericUpDown_ImageHeight.Value = ImageCommon.ResolutionDic[RESOLUTION_INDEX.VGA].Height;
+                        break;
+                    case RESOLUTION_INDEX.SDTB:
+                        numericUpDown_ImageWidth.Value = ImageCommon.ResolutionDic[RESOLUTION_INDEX.SDTB].Width;
+                        numericUpDown_ImageHeight.Value = ImageCommon.ResolutionDic[RESOLUTION_INDEX.SDTB].Height;
+                        break;
+                    case RESOLUTION_INDEX.HDTV:
+                        numericUpDown_ImageWidth.Value = ImageCommon.ResolutionDic[RESOLUTION_INDEX.HDTV].Width;
+                        numericUpDown_ImageHeight.Value = ImageCommon.ResolutionDic[RESOLUTION_INDEX.HDTV].Height;
+                        break;
+                    case RESOLUTION_INDEX.FHD_2K:
+                        numericUpDown_ImageWidth.Value = ImageCommon.ResolutionDic[RESOLUTION_INDEX.FHD_2K].Width;
+                        numericUpDown_ImageHeight.Value = ImageCommon.ResolutionDic[RESOLUTION_INDEX.FHD_2K].Height;
+                        break;
+                    case RESOLUTION_INDEX.WQHD:
+                        numericUpDown_ImageWidth.Value = ImageCommon.ResolutionDic[RESOLUTION_INDEX.WQHD].Width;
+                        numericUpDown_ImageHeight.Value = ImageCommon.ResolutionDic[RESOLUTION_INDEX.WQHD].Height;
+                        break;
+                    case RESOLUTION_INDEX.UHD_4K:
+                        numericUpDown_ImageWidth.Value = ImageCommon.ResolutionDic[RESOLUTION_INDEX.UHD_4K].Width;
+                        numericUpDown_ImageHeight.Value = ImageCommon.ResolutionDic[RESOLUTION_INDEX.UHD_4K].Height;
+                        break;
+                }
+                ReadUiValues();
             }
             EventEnable = true;
-
-
 
             CommonUpdate();
         }

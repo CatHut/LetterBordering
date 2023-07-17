@@ -39,6 +39,44 @@ namespace LetterBordering
             Initialize();
         }
 
+
+        public void Initialize()
+        {
+            ProjectDic = new Dictionary<string, ProjectClass>();
+
+            //設定ファイル
+            AsSettings = new CatHut.AppSetting<SettingClass>(SETTING_FILE);
+
+
+            //プロジェクトリストを初期化
+            InitProjectDic();
+
+
+            var id = AsSettings.Settings.SelectedProject;
+
+            //現在選択中のプロジェクトをロード
+            if (id == "")
+            {
+                //プロジェクトがない場合新規作成
+                CreateProject("New Project01");
+            }
+            else
+            {
+                if (ProjectDic.ContainsKey(id))
+                {
+                    //設定されいてる場合
+                    LoadProjectById(id);
+                }
+                else
+                {
+                    //設定されいてるがデータがない場合
+                    CreateProject("New Project01");
+                }
+            }
+
+        }
+
+
         /// <summary>
         /// 簡易リストからプロジェクト情報を生成する
         /// </summary>
@@ -86,7 +124,7 @@ namespace LetterBordering
                 }
             }
 
-            foreach(var temp in AsSettings.Settings.ProjectList)
+            foreach (var temp in AsSettings.Settings.ProjectList)
             {
                 var instance = new ProjectClass();
                 instance.Id = temp.Id;
@@ -98,41 +136,6 @@ namespace LetterBordering
 
         }
 
-        public void Initialize()
-        {
-            ProjectDic = new Dictionary<string, ProjectClass>();
-
-            //設定ファイル
-            AsSettings = new CatHut.AppSetting<SettingClass>(SETTING_FILE);
-
-
-            //プロジェクトリストを初期化
-            InitProjectDic();
-
-
-            var id = AsSettings.Settings.SelectedProject;
-
-            //現在選択中のプロジェクトをロード
-            if (id == "")
-            {
-                //プロジェクトがない場合新規作成
-                CreateProject("New Project01");
-            }
-            else
-            {
-                if (ProjectDic.ContainsKey(id))
-                {
-                    //設定されいてる場合
-                    LoadProjectById(id);
-                }
-                else
-                {
-                    //設定されいてるがデータがない場合
-                    CreateProject("New Project01");
-                }
-            }
-
-        }
 
         public void Save()
         {
