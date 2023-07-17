@@ -163,7 +163,7 @@ namespace LetterBordering
 
             // 文字列の描画位置を決める
             //Rectangle rect = new Rectangle(0, 0, width, height);
-            Point rect = new Point(margin, margin);
+            Point point = new Point(margin, margin);
 
             // GraphicsPathオブジェクトを作成する
             GraphicsPath path = new GraphicsPath();
@@ -179,10 +179,11 @@ namespace LetterBordering
             {
                 sf.Alignment = StringAlignment.Center;
                 sf.LineAlignment = StringAlignment.Center;
+                point = new Point(width / 2, height / 2);
             }
 
-            path.AddString(text, font.FontFamily, (int)font.Style, font.Size, rect, sf);
-            path1.AddString(text, font.FontFamily, (int)font.Style, font.Size, rect, sf);
+            path.AddString(text, font.FontFamily, (int)font.Style, font.Size, point, sf);
+            path1.AddString(text, font.FontFamily, (int)font.Style, font.Size, point, sf);
 
             //ペンを作成する
             // 縁取り２ペンを作成する
@@ -286,10 +287,6 @@ namespace LetterBordering
 
             //サイズ表示更新
             label_ImageSize.Text = bmp.Width.ToString().PadLeft(4) + "×" + bmp.Height.ToString().PadLeft(4);
-
-
-            //保存はここでする。
-
 
 
             //表示用の調整
