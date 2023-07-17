@@ -559,12 +559,7 @@ namespace LetterBordering
         {
             if (enable)
             {
-                panel_BasePointX.Enabled = enable;
-                numericUpDown_OffsetX.Enabled = enable;
                 checkBox_AutoCenterX.Enabled = enable;
-
-                panel_BasePointY.Enabled = enable;
-                numericUpDown_OffsetY.Enabled = enable;
                 checkBox_AutoCenterY.Enabled = enable;
 
                 panel_BasePointX.Enabled = !PM.AsProject.Settings.TextInfoDic[idx].AutoCenterX;
