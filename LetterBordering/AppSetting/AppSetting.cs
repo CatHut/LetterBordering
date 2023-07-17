@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.IO;
 using System.Diagnostics;
 
 namespace CatHut {
@@ -55,13 +56,11 @@ namespace CatHut {
             try
             {
                 //読み込むファイルを開く
-                var sr = new System.IO.StreamReader(SaveFile, new System.Text.UTF8Encoding(false));
-
-                //XMLファイルから読み込み、逆シリアル化する
-                this.Settings = (T)serializer.Deserialize(sr);
-
-                //ファイルを閉じる
-                sr.Close();
+                using (var sr = new System.IO.StreamReader(SaveFile, new System.Text.UTF8Encoding(false)))
+                {
+                    //XMLファイルから読み込み、逆シリアル化する
+                    this.Settings = (T)serializer.Deserialize(sr);
+                }
             }
             catch
             {
@@ -79,17 +78,14 @@ namespace CatHut {
             //オブジェクトの型を指定する
             var serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
 
-
             try
             {
-                //書き込むファイルを開く（UTF-8 BOM無し）
-                var sw = new System.IO.StreamWriter(SaveFile, false, new System.Text.UTF8Encoding(false));
-
-                //シリアル化し、XMLファイルに保存する
-                serializer.Serialize(sw, Settings);
-
-                //ファイルを閉じる
-                sw.Close();
+                //書き込むファイルを開く（UTF-8 BOMあり）
+                using (var sw = new StreamWriter(SaveFile, false, new UTF8Encoding(true)))
+                {
+                    // シリアル化し、XMLファイルに保存する
+                    serializer.Serialize(sw, Settings);
+                }
             }
             catch
             {

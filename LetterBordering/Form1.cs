@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Drawing.Text;
 using CatHut;
 using System.Diagnostics;
+using static LetterBordering.TextInfo;
 
 namespace LetterBordering
 {
@@ -29,6 +30,13 @@ namespace LetterBordering
             FontFamilyDic = GetFontFamiles();
 
             comboBox_Font.Items.AddRange(FontFamilyDic.Keys.ToArray());
+
+
+            EventEnable = false;
+            {
+                comboBox_Resolution.SelectedIndex = 0;
+            }
+            EventEnable = true;
 
             PM = new ProjectManager();
 
@@ -488,7 +496,7 @@ namespace LetterBordering
             PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY = (int)numericUpDown_ImageHeight.Value;
 
 
-
+            PM.AsProject.Settings.TextInfoDic[idx].ResolutionIndex = (RESOLUTION_INDEX)comboBox_Resolution.SelectedIndex;
             PM.AsProject.Settings.TextInfoDic[idx].OffsetX = (int)numericUpDown_OffsetX.Value;
             PM.AsProject.Settings.TextInfoDic[idx].OffsetY = (int)numericUpDown_OffsetY.Value;
 
@@ -531,8 +539,43 @@ namespace LetterBordering
             }
 
             PM.AsProject.Settings.TextInfoDic[idx].AutoCenterX = checkBox_AutoCenterX.Checked;
-
             PM.AsProject.Settings.TextInfoDic[idx].AutoCenterY = checkBox_AutoCenterY.Checked;
+
+            PM.AsProject.Settings.TextInfoDic[idx].ResolutionIndex = (RESOLUTION_INDEX)comboBox_Resolution.SelectedIndex;
+            switch (PM.AsProject.Settings.TextInfoDic[idx].ResolutionIndex)
+            {
+                case RESOLUTION_INDEX.NONE:
+                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.NONE].Width;
+                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.NONE].Height;
+                    break;
+                case RESOLUTION_INDEX.MANUAL:
+                    //‚È‚É‚à‚µ‚È‚¢
+                    break;
+                case RESOLUTION_INDEX.VGA:
+                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.VGA].Width;
+                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.VGA].Height;
+                    break;
+                case RESOLUTION_INDEX.SDTB:
+                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.SDTB].Width;
+                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.SDTB].Height;
+                    break;
+                case RESOLUTION_INDEX.HDTV:
+                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.HDTV].Width;
+                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.HDTV].Height;
+                    break;
+                case RESOLUTION_INDEX.FHD_2K:
+                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.FHD_2K].Width;
+                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.FHD_2K].Height;
+                    break;
+                case RESOLUTION_INDEX.WQHD:
+                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.WQHD].Width;
+                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.WQHD].Height;
+                    break;
+                case RESOLUTION_INDEX.UHD_4K:
+                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.UHD_4K].Width;
+                    PM.AsProject.Settings.TextInfoDic[idx].OffsetX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.UHD_4K].Height;
+                    break;
+            }
 
 
             PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0] = new DecorationInfo();
@@ -778,10 +821,28 @@ namespace LetterBordering
                 UpdateUiValues();
             }
             EventEnable = true;
+            CommonUpdate();
         }
 
         private void numericUpDown_ImageWidth_ValueChanged(object sender, EventArgs e)
         {
+            if (EventEnable == false) { return; }
+            EventEnable = false;
+            {
+                comboBox_Resolution.SelectedIndex = (int)RESOLUTION_INDEX.MANUAL;
+            }
+            EventEnable = true;
+
+            CommonUpdate();
+        }
+        private void numericUpDown_ImageHeight_ValueChanged(object sender, EventArgs e)
+        {
+            if (EventEnable == false) { return; }
+            EventEnable = false;
+            {
+                comboBox_Resolution.SelectedIndex = (int)RESOLUTION_INDEX.MANUAL;
+            }
+            EventEnable = true;
             CommonUpdate();
         }
 
@@ -790,10 +851,6 @@ namespace LetterBordering
             CommonUpdate();
         }
 
-        private void numericUpDown_ImageHeight_ValueChanged(object sender, EventArgs e)
-        {
-            CommonUpdate();
-        }
 
         private void checkBox_Bold_CheckedChanged(object sender, EventArgs e)
         {
@@ -926,7 +983,6 @@ namespace LetterBordering
             if (EventEnable == false) { return; }
             EventEnable = false;
             {
-
                 if (listView_TextSet.FocusedItem != null)
                 {
                     if (listView_TextSet.FocusedItem.Selected == true)
@@ -1007,6 +1063,20 @@ namespace LetterBordering
 
         private void radioButton_BottomBase_CheckedChanged(object sender, EventArgs e)
         {
+            CommonUpdate();
+        }
+
+        private void comboBox_Resolution_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (EventEnable == false) { return; }
+            EventEnable = false;
+            {
+
+            }
+            EventEnable = true;
+
+
+
             CommonUpdate();
         }
     }

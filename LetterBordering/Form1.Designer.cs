@@ -58,7 +58,7 @@
             numericUpDown_Size02 = new NumericUpDown();
             label4 = new Label();
             groupBox_ImageSize = new GroupBox();
-            comboBox1 = new ComboBox();
+            comboBox_Resolution = new ComboBox();
             groupBox_Offset = new GroupBox();
             groupBox_BasePoint = new GroupBox();
             panel_BasePointX = new Panel();
@@ -431,7 +431,7 @@
             // 
             // groupBox_ImageSize
             // 
-            groupBox_ImageSize.Controls.Add(comboBox1);
+            groupBox_ImageSize.Controls.Add(comboBox_Resolution);
             groupBox_ImageSize.Controls.Add(groupBox_Offset);
             groupBox_ImageSize.Controls.Add(button_ImageSizeClear);
             groupBox_ImageSize.Controls.Add(numericUpDown_ImageWidth);
@@ -445,13 +445,16 @@
             groupBox_ImageSize.TabStop = false;
             groupBox_ImageSize.Text = "画像サイズ(0で無効)";
             // 
-            // comboBox1
+            // comboBox_Resolution
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(194, 21);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(124, 23);
-            comboBox1.TabIndex = 8;
+            comboBox_Resolution.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox_Resolution.FormattingEnabled = true;
+            comboBox_Resolution.Items.AddRange(new object[] { "なし", "手動", "VGA\t640×480", "SDTV\t720×480", "HDTV\t1280×720", "2K/FHD\t1920×1080", "WQHD\t2560×1440", "4K/UHD\t3840×2160" });
+            comboBox_Resolution.Location = new Point(194, 21);
+            comboBox_Resolution.Name = "comboBox_Resolution";
+            comboBox_Resolution.Size = new Size(124, 23);
+            comboBox_Resolution.TabIndex = 8;
+            comboBox_Resolution.SelectedIndexChanged += comboBox_Resolution_SelectedIndexChanged;
             // 
             // groupBox_Offset
             // 
@@ -808,7 +811,7 @@
         private Button button_OpenFolder;
         private CheckBox checkBox_Centering;
         private System.Windows.Forms.Timer timer_TextChanged;
-        private ComboBox comboBox1;
+        private ComboBox comboBox_Resolution;
         private RadioButton radioButton_LeftBase;
         private Panel panel_BasePointY;
         private Panel panel_BasePointX;

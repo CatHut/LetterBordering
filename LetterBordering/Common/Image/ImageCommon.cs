@@ -7,11 +7,23 @@ using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static LetterBordering.TextInfo;
 
 namespace CatHut
 {
-    public class ImageCommon
+    public static class ImageCommon
     {
+        public static  Dictionary<RESOLUTION_INDEX, Size> ResolutionDic = new Dictionary<RESOLUTION_INDEX, Size>(){
+            {RESOLUTION_INDEX.NONE  , new Size(0   , 0   )},
+            {RESOLUTION_INDEX.VGA   , new Size(640 , 480 )},
+            {RESOLUTION_INDEX.SDTB  , new Size(720 , 480 )},
+            {RESOLUTION_INDEX.HDTV  , new Size(1280, 720 )},
+            {RESOLUTION_INDEX.FHD_2K, new Size(1920, 1080)},
+            {RESOLUTION_INDEX.WQHD  , new Size(2560, 1440)},
+            {RESOLUTION_INDEX.UHD_4K, new Size(3840, 2160)},
+        };
+
+
         public static Size MeasureString(string text, Font font)
         {
             // 仮のサイズを計測
@@ -25,6 +37,7 @@ namespace CatHut
 
             return resultSize;
         }
+
 
         public static Bitmap MarginRemove(Bitmap img, int alpha)
         {
@@ -104,117 +117,6 @@ namespace CatHut
         }
 
 
-        //    public static Size MeasureString(string text, Font font)
-        //    {
-        //        // 仮のサイズを計測
-        //        Bitmap image = new Bitmap(1, 1);
-        //        Graphics tempG = Graphics.FromImage(image);
-        //        SizeF size = tempG.MeasureString(text, font, int.MaxValue);
-        //        tempG.Dispose();
-        //        image.Dispose();
-
-        //        // 仮のサイズのベースの画像を作成
-        //        Bitmap baseImage = new Bitmap((int)Math.Ceiling(size.Width), (int)Math.Ceiling(size.Height), PixelFormat.Format32bppArgb);
-        //        Graphics g = Graphics.FromImage(baseImage);
-        //        g.SmoothingMode = SmoothingMode.AntiAlias;
-        //        g.TextRenderingHint = TextRenderingHint.AntiAlias;
-
-        //        // 文字列を実際に描画
-        //        g.DrawString(text, font, Brushes.Black, 0, 0);
-
-        //        // 上下左右の探索を行うための変数を初期化
-        //        int minX = baseImage.Width;
-        //        int maxX = 0;
-        //        int minY = baseImage.Height;
-        //        int maxY = 0;
-
-        //        // 上方向から探索
-        //        minY = BinarySearchY(baseImage, true);
-
-        //        // 下方向から探索
-        //        maxY = BinarySearchY(baseImage, false);
-
-        //        // 左方向から探索
-        //        minX = BinarySearchX(baseImage, true);
-
-        //        // 右方向から探索
-        //        maxX = BinarySearchX(baseImage, false);
-
-        //        // 範囲を計算して返す
-        //        int width = Math.Max(1, maxX - minX);
-        //        int height = Math.Max(1, maxY - minY);
-        //        Size resultSize = new Size(width, height);
-
-        //        // リソースを解放
-        //        g.Dispose();
-        //        baseImage.Dispose();
-
-        //        return resultSize;
-        //    }
-
-
-
-
-        //    private static int BinarySearchY(Bitmap image, bool searchUp)
-        //    {
-        //        int top = 0;
-        //        int bottom = image.Height - 1;
-        //        while (top <= bottom)
-        //        {
-        //            int mid = (top + bottom) / 2;
-        //            bool found = false;
-        //            for (int x = 0; x < image.Width; x++)
-        //            {
-        //                Color pixel = image.GetPixel(x, mid);
-        //                if (pixel.A != 0)
-        //                {
-        //                    found = true;
-        //                    break;
-        //                }
-        //            }
-        //            if (found == searchUp)
-        //            {
-        //                bottom = mid - 1;
-        //            }
-        //            else
-        //            {
-        //                top = mid + 1;
-        //            }
-        //        }
-        //        return searchUp ? top : bottom;
-        //    }
-
-        //    private static int BinarySearchX(Bitmap image, bool searchLeft)
-        //    {
-        //        int left = 0;
-        //        int right = image.Width - 1;
-        //        while (left <= right)
-        //        {
-        //            int mid = (left + right) / 2;
-        //            bool found = false;
-        //            for (int y = 0; y < image.Height; y++)
-        //            {
-        //                Color pixel = image.GetPixel(mid, y);
-        //                if (pixel.A != 0)
-        //                {
-        //                    found = true;
-        //                    break;
-        //                }
-        //            }
-        //            if (found == searchLeft)
-        //            {
-        //                right = mid - 1;
-        //            }
-        //            else
-        //            {
-        //                left = mid + 1;
-        //            }
-        //        }
-        //        return searchLeft ? left : right;
-        //    }
-
-
-        //}
 
     }
 

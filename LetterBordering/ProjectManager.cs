@@ -96,9 +96,6 @@ namespace LetterBordering
                 ProjectDic[temp.Id] = instance;
             }
 
-            //更新後のデータを保存
-            AsSettings.SaveData();
-
         }
 
         public void Initialize()
@@ -107,7 +104,7 @@ namespace LetterBordering
 
             //設定ファイル
             AsSettings = new CatHut.AppSetting<SettingClass>(SETTING_FILE);
-            AsSettings.Initialize();
+
 
             //プロジェクトリストを初期化
             InitProjectDic();
@@ -197,6 +194,7 @@ namespace LetterBordering
         {
             var file = DATA_FOLDER + "\\" + id + ".xml";
             AsProject = new CatHut.AppSetting<ProjectClass>(file);
+            if(AsProject.Settings.TextInfoDic.Count == 0) { this.AddText(); }
 
             ProjectDic[id] = AsProject.Settings;
             AsSettings.Settings.SelectedProject = id;
@@ -240,7 +238,7 @@ namespace LetterBordering
             temp.LastSave = DateTime.Now;
             AsSettings.Settings.ProjectList.Add(temp);
 
-            Save();
+            AsSettings.SaveData();
 
         }
 
@@ -254,7 +252,6 @@ namespace LetterBordering
             AddDeco();
             AddDeco();
 
-            Save();
         }
 
         public void AddDeco()

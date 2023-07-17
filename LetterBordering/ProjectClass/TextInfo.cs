@@ -23,7 +23,21 @@ namespace LetterBordering
             BOTTOM
         }
 
+        public enum RESOLUTION_INDEX
+        {
+            NONE,       //なし
+            MANUAL,         //手動
+            VGA,            //VGA	    640× 480
+            SDTB,           //SDTV	    720× 480
+            HDTV,           //HDTV	    1280×720
+            FHD_2K,         //2K/FHD	1920×1080
+            WQHD,           //WQHD  	2560×1440
+            UHD_4K,         //4K/UHD	3840×2160
+        }
+
+
         //画像補正情報
+        public RESOLUTION_INDEX ResolutionIndex;
         public int ImageSizeX;
         public int ImageSizeY;
         public int OffsetX;
@@ -46,7 +60,7 @@ namespace LetterBordering
         public SerializableSortedDictionary<int, DecorationInfo> DecorationDic;
 
         public TextInfo() {
-
+            ResolutionIndex = RESOLUTION_INDEX.NONE;
             ImageSizeX = 0;
             ImageSizeY = 0;
             OffsetX = 0;
