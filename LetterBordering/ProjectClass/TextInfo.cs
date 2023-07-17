@@ -9,13 +9,27 @@ namespace LetterBordering
 {
     public class TextInfo
     {
+        public enum BASE_POINT_X
+        {
+            LEFT,
+            CENTER,
+            RIGHT
+        }
+
+        public enum BASE_POINT_Y
+        {
+            TOP,
+            CENTER,
+            BOTTOM
+        }
+
         //画像補正情報
         public int ImageSizeX;
         public int ImageSizeY;
         public int OffsetX;
         public int OffsetY;
-        public bool CenterBaseX;
-        public bool CenterBaseY;
+        public BASE_POINT_X BasePointX;
+        public BASE_POINT_Y BasePointY;
         public bool AutoCenterX;
         public bool AutoCenterY;
 
@@ -38,8 +52,8 @@ namespace LetterBordering
             OffsetX = 0;
             OffsetY = 0;
 
-            CenterBaseX = false;
-            CenterBaseY = false;
+            BasePointX = BASE_POINT_X.CENTER;
+            BasePointY = BASE_POINT_Y.TOP;
             AutoCenterX = false;
             AutoCenterY = false;
 

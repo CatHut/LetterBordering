@@ -60,8 +60,15 @@
             groupBox_ImageSize = new GroupBox();
             comboBox1 = new ComboBox();
             groupBox_Offset = new GroupBox();
-            checkBox_CenterBaseY = new CheckBox();
-            checkBox_CenterBaseX = new CheckBox();
+            groupBox_BasePoint = new GroupBox();
+            panel_BasePointX = new Panel();
+            radioButton_LeftBase = new RadioButton();
+            radioButton_CenterBaseX = new RadioButton();
+            radioButton_RightBase = new RadioButton();
+            panel_BasePointY = new Panel();
+            radioButton_TopBase = new RadioButton();
+            radioButton_CenterBaseY = new RadioButton();
+            radioButton_BottomBase = new RadioButton();
             checkBox_AutoCenterY = new CheckBox();
             checkBox_AutoCenterX = new CheckBox();
             label_OffsetY = new Label();
@@ -95,6 +102,9 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown_Size02).BeginInit();
             groupBox_ImageSize.SuspendLayout();
             groupBox_Offset.SuspendLayout();
+            groupBox_BasePoint.SuspendLayout();
+            panel_BasePointX.SuspendLayout();
+            panel_BasePointY.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_OffsetX).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_OffsetY).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_ImageWidth).BeginInit();
@@ -445,8 +455,7 @@
             // 
             // groupBox_Offset
             // 
-            groupBox_Offset.Controls.Add(checkBox_CenterBaseY);
-            groupBox_Offset.Controls.Add(checkBox_CenterBaseX);
+            groupBox_Offset.Controls.Add(groupBox_BasePoint);
             groupBox_Offset.Controls.Add(checkBox_AutoCenterY);
             groupBox_Offset.Controls.Add(checkBox_AutoCenterX);
             groupBox_Offset.Controls.Add(label_OffsetY);
@@ -460,32 +469,120 @@
             groupBox_Offset.TabStop = false;
             groupBox_Offset.Text = "オフセット";
             // 
-            // checkBox_CenterBaseY
+            // groupBox_BasePoint
             // 
-            checkBox_CenterBaseY.AutoSize = true;
-            checkBox_CenterBaseY.Location = new Point(146, 58);
-            checkBox_CenterBaseY.Name = "checkBox_CenterBaseY";
-            checkBox_CenterBaseY.Size = new Size(74, 19);
-            checkBox_CenterBaseY.TabIndex = 34;
-            checkBox_CenterBaseY.Text = "中央基準";
-            checkBox_CenterBaseY.UseVisualStyleBackColor = true;
-            checkBox_CenterBaseY.CheckedChanged += checkBox_CenterBaseY_CheckedChanged;
+            groupBox_BasePoint.Controls.Add(panel_BasePointX);
+            groupBox_BasePoint.Controls.Add(panel_BasePointY);
+            groupBox_BasePoint.Location = new Point(118, 14);
+            groupBox_BasePoint.Name = "groupBox_BasePoint";
+            groupBox_BasePoint.Size = new Size(171, 74);
+            groupBox_BasePoint.TabIndex = 43;
+            groupBox_BasePoint.TabStop = false;
+            groupBox_BasePoint.Text = "基準";
             // 
-            // checkBox_CenterBaseX
+            // panel_BasePointX
             // 
-            checkBox_CenterBaseX.AutoSize = true;
-            checkBox_CenterBaseX.Location = new Point(146, 30);
-            checkBox_CenterBaseX.Name = "checkBox_CenterBaseX";
-            checkBox_CenterBaseX.Size = new Size(74, 19);
-            checkBox_CenterBaseX.TabIndex = 33;
-            checkBox_CenterBaseX.Text = "中央基準";
-            checkBox_CenterBaseX.UseVisualStyleBackColor = true;
-            checkBox_CenterBaseX.CheckedChanged += checkBox_CenterBaseX_CheckedChanged;
+            panel_BasePointX.Controls.Add(radioButton_LeftBase);
+            panel_BasePointX.Controls.Add(radioButton_CenterBaseX);
+            panel_BasePointX.Controls.Add(radioButton_RightBase);
+            panel_BasePointX.Location = new Point(6, 13);
+            panel_BasePointX.Name = "panel_BasePointX";
+            panel_BasePointX.Size = new Size(142, 29);
+            panel_BasePointX.TabIndex = 41;
+            panel_BasePointX.Tag = "";
+            // 
+            // radioButton_LeftBase
+            // 
+            radioButton_LeftBase.AutoSize = true;
+            radioButton_LeftBase.Location = new Point(3, 3);
+            radioButton_LeftBase.Name = "radioButton_LeftBase";
+            radioButton_LeftBase.Size = new Size(37, 19);
+            radioButton_LeftBase.TabIndex = 35;
+            radioButton_LeftBase.TabStop = true;
+            radioButton_LeftBase.Tag = "LEFT";
+            radioButton_LeftBase.Text = "左";
+            radioButton_LeftBase.UseVisualStyleBackColor = true;
+            radioButton_LeftBase.CheckedChanged += radioButton_LeftBase_CheckedChanged;
+            // 
+            // radioButton_CenterBaseX
+            // 
+            radioButton_CenterBaseX.AutoSize = true;
+            radioButton_CenterBaseX.Location = new Point(46, 3);
+            radioButton_CenterBaseX.Name = "radioButton_CenterBaseX";
+            radioButton_CenterBaseX.Size = new Size(49, 19);
+            radioButton_CenterBaseX.TabIndex = 36;
+            radioButton_CenterBaseX.TabStop = true;
+            radioButton_CenterBaseX.Tag = "CENTER";
+            radioButton_CenterBaseX.Text = "中央";
+            radioButton_CenterBaseX.UseVisualStyleBackColor = true;
+            radioButton_CenterBaseX.CheckedChanged += radioButton_CenterBaseX_CheckedChanged;
+            // 
+            // radioButton_RightBase
+            // 
+            radioButton_RightBase.AutoSize = true;
+            radioButton_RightBase.Location = new Point(101, 3);
+            radioButton_RightBase.Name = "radioButton_RightBase";
+            radioButton_RightBase.Size = new Size(37, 19);
+            radioButton_RightBase.TabIndex = 37;
+            radioButton_RightBase.TabStop = true;
+            radioButton_RightBase.Tag = "RIGHT";
+            radioButton_RightBase.Text = "右";
+            radioButton_RightBase.UseVisualStyleBackColor = true;
+            radioButton_RightBase.CheckedChanged += radioButton_RightBase_CheckedChanged;
+            // 
+            // panel_BasePointY
+            // 
+            panel_BasePointY.Controls.Add(radioButton_TopBase);
+            panel_BasePointY.Controls.Add(radioButton_CenterBaseY);
+            panel_BasePointY.Controls.Add(radioButton_BottomBase);
+            panel_BasePointY.Location = new Point(6, 41);
+            panel_BasePointY.Name = "panel_BasePointY";
+            panel_BasePointY.Size = new Size(142, 29);
+            panel_BasePointY.TabIndex = 42;
+            // 
+            // radioButton_TopBase
+            // 
+            radioButton_TopBase.AutoSize = true;
+            radioButton_TopBase.Location = new Point(3, 3);
+            radioButton_TopBase.Name = "radioButton_TopBase";
+            radioButton_TopBase.Size = new Size(37, 19);
+            radioButton_TopBase.TabIndex = 38;
+            radioButton_TopBase.TabStop = true;
+            radioButton_TopBase.Tag = "TOP";
+            radioButton_TopBase.Text = "上";
+            radioButton_TopBase.UseVisualStyleBackColor = true;
+            radioButton_TopBase.CheckedChanged += radioButton_TopBase_CheckedChanged;
+            // 
+            // radioButton_CenterBaseY
+            // 
+            radioButton_CenterBaseY.AutoSize = true;
+            radioButton_CenterBaseY.Location = new Point(46, 3);
+            radioButton_CenterBaseY.Name = "radioButton_CenterBaseY";
+            radioButton_CenterBaseY.Size = new Size(49, 19);
+            radioButton_CenterBaseY.TabIndex = 39;
+            radioButton_CenterBaseY.TabStop = true;
+            radioButton_CenterBaseY.Tag = "CENTER";
+            radioButton_CenterBaseY.Text = "中央";
+            radioButton_CenterBaseY.UseVisualStyleBackColor = true;
+            radioButton_CenterBaseY.CheckedChanged += radioButton_CenterBaseY_CheckedChanged;
+            // 
+            // radioButton_BottomBase
+            // 
+            radioButton_BottomBase.AutoSize = true;
+            radioButton_BottomBase.Location = new Point(101, 3);
+            radioButton_BottomBase.Name = "radioButton_BottomBase";
+            radioButton_BottomBase.Size = new Size(37, 19);
+            radioButton_BottomBase.TabIndex = 40;
+            radioButton_BottomBase.TabStop = true;
+            radioButton_BottomBase.Tag = "BOTTOM";
+            radioButton_BottomBase.Text = "下";
+            radioButton_BottomBase.UseVisualStyleBackColor = true;
+            radioButton_BottomBase.CheckedChanged += radioButton_BottomBase_CheckedChanged;
             // 
             // checkBox_AutoCenterY
             // 
             checkBox_AutoCenterY.AutoSize = true;
-            checkBox_AutoCenterY.Location = new Point(272, 58);
+            checkBox_AutoCenterY.Location = new Point(295, 58);
             checkBox_AutoCenterY.Name = "checkBox_AutoCenterY";
             checkBox_AutoCenterY.Size = new Size(74, 19);
             checkBox_AutoCenterY.TabIndex = 32;
@@ -496,7 +593,7 @@
             // checkBox_AutoCenterX
             // 
             checkBox_AutoCenterX.AutoSize = true;
-            checkBox_AutoCenterX.Location = new Point(272, 30);
+            checkBox_AutoCenterX.Location = new Point(295, 30);
             checkBox_AutoCenterX.Name = "checkBox_AutoCenterX";
             checkBox_AutoCenterX.Size = new Size(74, 19);
             checkBox_AutoCenterX.TabIndex = 29;
@@ -653,6 +750,11 @@
             groupBox_ImageSize.PerformLayout();
             groupBox_Offset.ResumeLayout(false);
             groupBox_Offset.PerformLayout();
+            groupBox_BasePoint.ResumeLayout(false);
+            panel_BasePointX.ResumeLayout(false);
+            panel_BasePointX.PerformLayout();
+            panel_BasePointY.ResumeLayout(false);
+            panel_BasePointY.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_OffsetX).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_OffsetY).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_ImageWidth).EndInit();
@@ -697,8 +799,6 @@
         private GroupBox groupBox_Offset;
         private Label label_OffsetY;
         private Label label_OffsetX;
-        private CheckBox checkBox_CenterBaseY;
-        private CheckBox checkBox_CenterBaseX;
         private CheckBox checkBox_AutoCenterY;
         private Button button_Color00;
         private SplitContainer splitContainer2;
@@ -709,5 +809,14 @@
         private CheckBox checkBox_Centering;
         private System.Windows.Forms.Timer timer_TextChanged;
         private ComboBox comboBox1;
+        private RadioButton radioButton_LeftBase;
+        private Panel panel_BasePointY;
+        private Panel panel_BasePointX;
+        private RadioButton radioButton_BottomBase;
+        private RadioButton radioButton_CenterBaseY;
+        private RadioButton radioButton_TopBase;
+        private RadioButton radioButton_RightBase;
+        private RadioButton radioButton_CenterBaseX;
+        private GroupBox groupBox_BasePoint;
     }
 }

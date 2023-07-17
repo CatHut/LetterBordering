@@ -1,14 +1,10 @@
-using LetterBordering.Setting;
+
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
-using System.Linq.Expressions;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using CatHut;
 using System.Diagnostics;
-using System.IO;
 
 namespace LetterBordering
 {
@@ -323,8 +319,8 @@ namespace LetterBordering
             {
                 // B is larger than A, resize it to fit within A
                 float scale = Math.Min((float)pictureBox_Preview.Width / bmp.Width, (float)pictureBox_Preview.Height / bmp.Height);
-                int newWidth = (int)(bmp.Width * scale);
-                int newHeight = (int)(bmp.Height * scale);
+                int newWidth = Math.Max(1, (int)(bmp.Width * scale));
+                int newHeight = Math.Max(1, (int)(bmp.Height * scale));
                 Bitmap resizedB = new Bitmap(bmp, new Size(newWidth, newHeight));
                 bmp.Dispose();
                 pictureBox_Preview.Image = resizedB;
@@ -404,13 +400,31 @@ namespace LetterBordering
             var tempX = textInfo.OffsetX;
             var tempY = textInfo.OffsetY;
 
-            if (textInfo.CenterBaseX)
+
+            switch (textInfo.BasePointX)
             {
-                tempX = textInfo.OffsetX - str.Width / 2;
+                case TextInfo.BASE_POINT_X.LEFT:
+                    tempX = textInfo.OffsetX;
+                    break;
+                case TextInfo.BASE_POINT_X.CENTER:
+                    tempX = textInfo.OffsetX - str.Width / 2;
+                    break;
+                case TextInfo.BASE_POINT_X.RIGHT:
+                    tempX = textInfo.OffsetX - str.Width;
+                    break;
             }
-            if (textInfo.CenterBaseY)
+
+            switch (textInfo.BasePointY)
             {
-                tempY = textInfo.OffsetY - str.Height / 2;
+                case TextInfo.BASE_POINT_Y.TOP:
+                    tempY = textInfo.OffsetY;
+                    break;
+                case TextInfo.BASE_POINT_Y.CENTER:
+                    tempY = textInfo.OffsetY - str.Height / 2;
+                    break;
+                case TextInfo.BASE_POINT_Y.BOTTOM:
+                    tempY = textInfo.OffsetY - str.Height;
+                    break;
             }
 
             if (textInfo.AutoCenterX)
@@ -472,13 +486,54 @@ namespace LetterBordering
 
             PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX = (int)numericUpDown_ImageWidth.Value;
             PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY = (int)numericUpDown_ImageHeight.Value;
+
+
+
             PM.AsProject.Settings.TextInfoDic[idx].OffsetX = (int)numericUpDown_OffsetX.Value;
             PM.AsProject.Settings.TextInfoDic[idx].OffsetY = (int)numericUpDown_OffsetY.Value;
 
-            PM.AsProject.Settings.TextInfoDic[idx].CenterBaseX = checkBox_CenterBaseX.Checked;
-            PM.AsProject.Settings.TextInfoDic[idx].CenterBaseY = checkBox_CenterBaseY.Checked;
+            foreach (RadioButton rb in panel_BasePointX.Controls)
+            {
+                switch (rb.Tag)
+                {
+                    case "LEFT":
+                        if (rb.Checked) { PM.AsProject.Settings.TextInfoDic[idx].BasePointX = TextInfo.BASE_POINT_X.LEFT; }
+                        break;
+                    case "CENTER":
+                        if (rb.Checked) { PM.AsProject.Settings.TextInfoDic[idx].BasePointX = TextInfo.BASE_POINT_X.CENTER; }
+                        break;
+                    case "RIGHT":
+                        if (rb.Checked) { PM.AsProject.Settings.TextInfoDic[idx].BasePointX = TextInfo.BASE_POINT_X.RIGHT; }
+                        break;
+                    default:
+                        PM.AsProject.Settings.TextInfoDic[idx].BasePointX = TextInfo.BASE_POINT_X.CENTER;
+                        break;
+                }
+            }
+
+            foreach (RadioButton rb in panel_BasePointY.Controls)
+            {
+                switch (rb.Tag)
+                {
+                    case "TOP":
+                        if (rb.Checked) { PM.AsProject.Settings.TextInfoDic[idx].BasePointY = TextInfo.BASE_POINT_Y.TOP; }
+                        break;
+                    case "CENTER":
+                        if (rb.Checked) { PM.AsProject.Settings.TextInfoDic[idx].BasePointY = TextInfo.BASE_POINT_Y.CENTER; }
+                        break;
+                    case "BOTTOM":
+                        if (rb.Checked) { PM.AsProject.Settings.TextInfoDic[idx].BasePointY = TextInfo.BASE_POINT_Y.BOTTOM; }
+                        break;
+                    default:
+                        PM.AsProject.Settings.TextInfoDic[idx].BasePointY = TextInfo.BASE_POINT_Y.TOP;
+                        break;
+                }
+            }
+
             PM.AsProject.Settings.TextInfoDic[idx].AutoCenterX = checkBox_AutoCenterX.Checked;
+
             PM.AsProject.Settings.TextInfoDic[idx].AutoCenterY = checkBox_AutoCenterY.Checked;
+
 
             PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0] = new DecorationInfo();
             PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0].Thick = (int)numericUpDown_Size01.Value; //âèéÊÇËÇPëæÇ≥
@@ -487,7 +542,50 @@ namespace LetterBordering
             PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[1] = new DecorationInfo();
             PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[1].Thick = (int)numericUpDown_Size02.Value; //âèéÊÇËÇQëæÇ≥
             PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[1].Color = new SerializableColor(button_Color02.BackColor); //âèéÊÇËÇQêF
+
+            if (PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX != 0 && PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY != 0)
+            {
+                EnableOffsetControls(idx, true);
+            }
+            else
+            {
+                EnableOffsetControls(idx, false);
+            }
+
             PM.AsProject.SaveData();
+        }
+
+        public void EnableOffsetControls(int idx, bool enable)
+        {
+            if (enable)
+            {
+                panel_BasePointX.Enabled = enable;
+                numericUpDown_OffsetX.Enabled = enable;
+                checkBox_AutoCenterX.Enabled = enable;
+
+                panel_BasePointY.Enabled = enable;
+                numericUpDown_OffsetY.Enabled = enable;
+                checkBox_AutoCenterY.Enabled = enable;
+
+                panel_BasePointX.Enabled = !PM.AsProject.Settings.TextInfoDic[idx].AutoCenterX;
+                numericUpDown_OffsetX.Enabled = !PM.AsProject.Settings.TextInfoDic[idx].AutoCenterX;
+
+                panel_BasePointY.Enabled = !PM.AsProject.Settings.TextInfoDic[idx].AutoCenterY;
+                numericUpDown_OffsetY.Enabled = !PM.AsProject.Settings.TextInfoDic[idx].AutoCenterY;
+
+            }
+            else
+            {
+                panel_BasePointX.Enabled = enable;
+                numericUpDown_OffsetX.Enabled = enable;
+                checkBox_AutoCenterX.Enabled = enable;
+
+                panel_BasePointY.Enabled = enable;
+                numericUpDown_OffsetY.Enabled = enable;
+                checkBox_AutoCenterY.Enabled = enable;
+
+            }
+
         }
 
 
@@ -507,8 +605,32 @@ namespace LetterBordering
             numericUpDown_OffsetX.Value = PM.AsProject.Settings.TextInfoDic[idx].OffsetX;
             numericUpDown_OffsetY.Value = PM.AsProject.Settings.TextInfoDic[idx].OffsetY;
 
-            checkBox_CenterBaseX.Checked = PM.AsProject.Settings.TextInfoDic[idx].CenterBaseX;
-            checkBox_CenterBaseY.Checked = PM.AsProject.Settings.TextInfoDic[idx].CenterBaseY;
+            switch (PM.AsProject.Settings.TextInfoDic[idx].BasePointX)
+            {
+                case TextInfo.BASE_POINT_X.LEFT:
+                    radioButton_LeftBase.Checked = true;
+                    break;
+                case TextInfo.BASE_POINT_X.CENTER:
+                    radioButton_CenterBaseX.Checked = true;
+                    break;
+                case TextInfo.BASE_POINT_X.RIGHT:
+                    radioButton_RightBase.Checked = true;
+                    break;
+            }
+
+            switch (PM.AsProject.Settings.TextInfoDic[idx].BasePointY)
+            {
+                case TextInfo.BASE_POINT_Y.TOP:
+                    radioButton_TopBase.Checked = true;
+                    break;
+                case TextInfo.BASE_POINT_Y.CENTER:
+                    radioButton_CenterBaseY.Checked = true;
+                    break;
+                case TextInfo.BASE_POINT_Y.BOTTOM:
+                    radioButton_BottomBase.Checked = true;
+                    break;
+            }
+
             checkBox_AutoCenterX.Checked = PM.AsProject.Settings.TextInfoDic[idx].AutoCenterX;
             checkBox_AutoCenterY.Checked = PM.AsProject.Settings.TextInfoDic[idx].AutoCenterY;
 
@@ -861,6 +983,36 @@ namespace LetterBordering
             {
                 SaveImage(idx);
             }
+        }
+
+        private void radioButton_LeftBase_CheckedChanged(object sender, EventArgs e)
+        {
+            CommonUpdate();
+        }
+
+        private void radioButton_CenterBaseX_CheckedChanged(object sender, EventArgs e)
+        {
+            CommonUpdate();
+        }
+
+        private void radioButton_RightBase_CheckedChanged(object sender, EventArgs e)
+        {
+            CommonUpdate();
+        }
+
+        private void radioButton_TopBase_CheckedChanged(object sender, EventArgs e)
+        {
+            CommonUpdate();
+        }
+
+        private void radioButton_CenterBaseY_CheckedChanged(object sender, EventArgs e)
+        {
+            CommonUpdate();
+        }
+
+        private void radioButton_BottomBase_CheckedChanged(object sender, EventArgs e)
+        {
+            CommonUpdate();
         }
     }
 }
