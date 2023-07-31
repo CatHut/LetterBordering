@@ -17,7 +17,7 @@ namespace CatHut
         {
             using (var ms = new MemoryStream())
             {
-                XmlSerializer xs = new XmlSerializer(typeof(LetterBordering.TextInfo));
+                XmlSerializer xs = new XmlSerializer(typeof(T));
                 xs.Serialize(XmlWriter.Create(ms), obj);
 
                 ms.Flush();
