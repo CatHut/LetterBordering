@@ -39,7 +39,7 @@ namespace CatHut
         }
 
 
-        public static Bitmap MarginRemove(Bitmap img, int alpha)
+        public static Bitmap MarginRemoveB(Bitmap img, int alpha)
         {
             // 余白を検出するための最小値
             int minX = img.Width;
@@ -97,6 +97,70 @@ namespace CatHut
 
             return newImg;
         }
+
+        public static Bitmap MarginRemove(Bitmap img, int alpha)
+        {
+            // 余白を検出するための最小値
+            int minX = img.Width / 2;
+            int minY = img.Height / 2;
+            int maxX = img.Width / 2;
+            int maxY = img.Height / 2;
+
+            // BitmapDataオブジェクトを作成する
+            BitmapData data = img.LockBits(new Rectangle(0, 0, img.Width, img.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+
+            // ピクセルデータの先頭アドレスを取得する
+            IntPtr ptr = data.Scan0;
+
+            // ピクセルデータをバイト配列にコピーする
+            int bytes = Math.Abs(data.Stride) * data.Height;
+            byte[] rgbValues = new byte[bytes];
+            System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
+
+            // 画像をスキャンする
+            for (int i = 0; i < rgbValues.Length; i += 4)
+            {
+                // アルファ値を取得する
+                byte a = rgbValues[i + 3];
+
+                // 透明でないピクセルの場合は、余白の境界を更新する
+                if (a > alpha)
+                {
+                    // x座標とy座標を計算する
+                    int x = (i / 4) % data.Width;
+                    int y = (i / 4) / data.Width;
+
+                    if (x < minX) minX = x;
+                    if (y < minY) minY = y;
+                    if (x > maxX) maxX = x;
+                    if (y > maxY) maxY = y;
+                }
+            }
+
+            // BitmapDataオブジェクトを解放する
+            img.UnlockBits(data);
+
+            // minX, maxX, minY, maxY の値が正しいかチェックする
+            // 値が不正な場合は、それぞれ0を設定する
+            maxX = Math.Max(0, maxX);
+            maxY = Math.Max(0, maxY);
+            minX = Math.Min(maxX, minX);
+            minY = Math.Min(maxY, minY);
+
+            if (maxY == minY || maxX == minX)
+            {
+                return CreateErrorImage();
+            }
+
+            // 新しいBitmapオブジェクトを作成する
+            Bitmap newImg = new Bitmap(maxX - minX + 1, maxY - minY + 1);
+
+            // Cloneメソッドで余白を削除した画像を作成する
+            newImg = img.Clone(new Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1), PixelFormat.Format32bppArgb);
+
+            return newImg;
+        }
+
 
         private static Bitmap CreateErrorImage()
         {

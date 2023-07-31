@@ -40,6 +40,7 @@
             splitContainer1 = new SplitContainer();
             button_CreateProject = new Button();
             splitContainer2 = new SplitContainer();
+            button_Copy = new Button();
             button_OpenFolder = new Button();
             button_Output = new Button();
             button_OutputAll = new Button();
@@ -84,7 +85,6 @@
             label_StringImageSize = new Label();
             label_ImageSize = new Label();
             timer_TextChanged = new System.Windows.Forms.Timer(components);
-            button_Copy = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Preview).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -238,6 +238,16 @@
             splitContainer2.Size = new Size(1184, 544);
             splitContainer2.SplitterDistance = 200;
             splitContainer2.TabIndex = 30;
+            // 
+            // button_Copy
+            // 
+            button_Copy.Location = new Point(62, 20);
+            button_Copy.Name = "button_Copy";
+            button_Copy.Size = new Size(47, 23);
+            button_Copy.TabIndex = 31;
+            button_Copy.Text = "コピー";
+            button_Copy.UseVisualStyleBackColor = true;
+            button_Copy.Click += button_Copy_Click;
             // 
             // button_OpenFolder
             // 
@@ -397,7 +407,7 @@
             // numericUpDown_FontSize
             // 
             numericUpDown_FontSize.Location = new Point(195, 20);
-            numericUpDown_FontSize.Maximum = new decimal(new int[] { 200, 0, 0, 0 });
+            numericUpDown_FontSize.Maximum = new decimal(new int[] { 500, 0, 0, 0 });
             numericUpDown_FontSize.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown_FontSize.Name = "numericUpDown_FontSize";
             numericUpDown_FontSize.Size = new Size(56, 23);
@@ -724,16 +734,6 @@
             // 
             timer_TextChanged.Interval = 50;
             timer_TextChanged.Tick += timer_TextChanged_Tick;
-            // 
-            // button_Copy
-            // 
-            button_Copy.Location = new Point(62, 20);
-            button_Copy.Name = "button_Copy";
-            button_Copy.Size = new Size(47, 23);
-            button_Copy.TabIndex = 31;
-            button_Copy.Text = "コピー";
-            button_Copy.UseVisualStyleBackColor = true;
-            button_Copy.Click += button_Copy_Click;
             // 
             // Form1
             // 

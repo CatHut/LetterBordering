@@ -37,27 +37,5 @@ namespace CatHut
             return Color.FromArgb(A, R, G, B);
         }
 
-        //public XmlSchema GetSchema()
-        //{
-        //    return null;
-        //}
-
-        //public void ReadXml(XmlReader reader)
-        //{
-        //    reader.ReadStartElement();
-        //    A = byte.Parse(reader.ReadElementString("A"));
-        //    R = byte.Parse(reader.ReadElementString("R"));
-        //    G = byte.Parse(reader.ReadElementString("G"));
-        //    B = byte.Parse(reader.ReadElementString("B"));
-        //    reader.ReadEndElement();
-        //}
-
-        //public void WriteXml(XmlWriter writer)
-        //{
-        //    writer.WriteElementString("A", A.ToString());
-        //    writer.WriteElementString("R", R.ToString());
-        //    writer.WriteElementString("G", G.ToString());
-        //    writer.WriteElementString("B", B.ToString());
-        //}
     }
 }

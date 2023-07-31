@@ -1156,7 +1156,7 @@ namespace LetterBordering
 
         private void button_Copy_Click(object sender, EventArgs e)
         {
-            if(listView_TextSet.SelectedItems.Count == 0) { return; }
+            if (listView_TextSet.SelectedItems.Count == 0) { return; }
 
             if (EventEnable == false) { return; }
             EventEnable = false;
