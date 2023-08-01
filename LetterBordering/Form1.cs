@@ -254,45 +254,7 @@ namespace LetterBordering
             //サイズ表示更新
             label_StringImageSize.Text = bmp.Width.ToString().PadLeft(4) + "×" + bmp.Height.ToString().PadLeft(4);
 
-
-            //画像サイズ調整
-            var textInfo = PM.AsProject.Settings.TextInfoDic[idx];
-            if (textInfo.ImageSizeX != 0 && textInfo.ImageSizeY != 0)
-            {
-                Bitmap resizeBmp = new Bitmap(textInfo.ImageSizeX, textInfo.ImageSizeY, PixelFormat.Format32bppPArgb);
-
-                using (Graphics tempG = Graphics.FromImage(resizeBmp))
-                {
-                    var xy = CalcOffset(bmp, resizeBmp);
-                    var src_x = 0;
-                    var src_y = 0;
-                    var src_w = bmp.Width;
-                    var src_h = bmp.Height;
-
-                    var dest_x = xy.Width;
-                    var dest_y = xy.Height;
-
-                    if (xy.Width < 0)
-                    {
-                        src_x = Math.Abs(xy.Width);
-                        src_w = src_w - src_x;
-                        dest_x = 0;
-                    }
-
-                    if (xy.Height < 0)
-                    {
-                        src_y = Math.Abs(xy.Height);
-                        src_h = src_h - src_y;
-                        dest_y = 0;
-                    }
-                    Rectangle srcRect = new Rectangle(src_x, src_y, src_w, src_h);
-                    destRect = new Rectangle(dest_x, dest_y, src_w, src_h);
-                    tempG.DrawImage(bmp, (Rectangle)destRect, srcRect, GraphicsUnit.Pixel);
-                }
-
-                bmp.Dispose();
-                bmp = resizeBmp;
-            }
+            bmp = ResizeImage(bmp, idx, out destRect);
 
             //サイズ表示更新
             label_ImageSize.Text = bmp.Width.ToString().PadLeft(4) + "×" + bmp.Height.ToString().PadLeft(4);
@@ -344,10 +306,15 @@ namespace LetterBordering
 
         }
 
-        private void SaveImage(int idx)
+        private Bitmap ResizeImage(Bitmap bmp, int idx)
         {
+            Rectangle? temp;
+            ResizeImage(bmp, idx, out temp);
+            return bmp;
+        }
 
-            var bmp = CreateImage(idx);
+        private Bitmap ResizeImage(Bitmap bmp, int idx, out Rectangle? rect)
+        {
             Rectangle? destRect = null;
 
             //画像サイズ調整
@@ -388,6 +355,18 @@ namespace LetterBordering
                 bmp.Dispose();
                 bmp = resizeBmp;
             }
+
+            rect = destRect;
+
+            return bmp;
+        }
+
+
+        private void SaveImage(int idx)
+        {
+
+            var bmp = CreateImage(idx);
+            bmp = ResizeImage(bmp, idx);
 
             var path = @"Output\" + PM.AsProject.Settings.Name;
 
