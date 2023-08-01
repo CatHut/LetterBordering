@@ -1131,9 +1131,11 @@ namespace LetterBordering
             EventEnable = false;
             {
                 var deleteList = listView_TextSet.SelectedItems;
+                var setIndex = 0;
                 foreach (ListViewItem item in deleteList)
                 {
                     PM.AsProject.Settings.TextInfoDic.Remove(item.Index);
+                    setIndex = Math.Max(item.Index - 1, 0);
                 }
 
                 var tempDic = new SerializableSortedDictionary<int, TextInfo>();
@@ -1145,7 +1147,10 @@ namespace LetterBordering
                     tempDic.Add(i++, ti.Value);
                 }
                 PM.AsProject.Settings.TextInfoDic = tempDic;
-                PM.AsProject.Settings.SelectedTextIndex = 0;
+
+                setIndex = Math.Min(tempDic.Count - 1, setIndex);
+                PM.AsProject.Settings.SelectedTextIndex = setIndex;
+
                 UpdateUiValues();
 
             }
