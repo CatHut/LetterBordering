@@ -254,7 +254,33 @@ namespace LetterBordering
             //サイズ表示更新
             label_StringImageSize.Text = bmp.Width.ToString().PadLeft(4) + "×" + bmp.Height.ToString().PadLeft(4);
 
-            bmp = ResizeImage(bmp, idx, out destRect);
+            bmp = ResizeImage(ref bmp, idx, out destRect);
+
+            //複数選択されている場合には重複描画を行う
+            foreach(var itemIdx in listView_TextSet.SelectedIndices)
+            {
+                if(itemIdx == null) { continue; }
+
+                var tempIdx = (int)itemIdx;
+                if(idx == tempIdx) { continue; }    //自分自身は処理しない
+
+                var textInfo = PM.AsProject.Settings.TextInfoDic[tempIdx];
+                var width = textInfo.ImageSizeX;
+                var height = textInfo.ImageSizeY;
+
+                if (bmp.Width == width && bmp.Height == height)
+                {
+                    var tempImage = CreateImage(tempIdx);
+                    tempImage = ResizeImage(ref tempImage, tempIdx);
+
+                    using (Graphics tempG = Graphics.FromImage(bmp))
+                    {
+                        tempG.DrawImage(tempImage, 0, 0);
+                    }
+                }
+
+            }
+
 
             //サイズ表示更新
             label_ImageSize.Text = bmp.Width.ToString().PadLeft(4) + "×" + bmp.Height.ToString().PadLeft(4);
@@ -306,14 +332,14 @@ namespace LetterBordering
 
         }
 
-        private Bitmap ResizeImage(Bitmap bmp, int idx)
+        private Bitmap ResizeImage(ref Bitmap bmp, int idx)
         {
             Rectangle? temp;
-            ResizeImage(bmp, idx, out temp);
+            ResizeImage(ref bmp, idx, out temp);
             return bmp;
         }
 
-        private Bitmap ResizeImage(Bitmap bmp, int idx, out Rectangle? rect)
+        private Bitmap ResizeImage(ref Bitmap bmp, int idx, out Rectangle? rect)
         {
             Rectangle? destRect = null;
 
@@ -353,6 +379,7 @@ namespace LetterBordering
                 }
 
                 bmp.Dispose();
+                bmp = null;
                 bmp = resizeBmp;
             }
 
@@ -366,7 +393,7 @@ namespace LetterBordering
         {
 
             var bmp = CreateImage(idx);
-            bmp = ResizeImage(bmp, idx);
+            bmp = ResizeImage(ref bmp, idx);
 
             var path = @"Output\" + PM.AsProject.Settings.Name;
 
