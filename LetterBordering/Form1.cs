@@ -685,7 +685,7 @@ namespace LetterBordering
             checkBox_Italic.Checked = PM.AsProject.Settings.TextInfoDic[idx].Italic;
             checkBox_Centering.Checked = PM.AsProject.Settings.TextInfoDic[idx].Centering;
 
-            textBox_InputText.Text = PM.AsProject.Settings.TextInfoDic[idx].Text.Replace("\n", Environment.NewLine);
+            textBox_InputText.Text = CatHutCommon.NormalizeNewLine(PM.AsProject.Settings.TextInfoDic[idx].Text);
 
             //ëïè¸
             numericUpDown_Size01.Value = PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0].Thick;

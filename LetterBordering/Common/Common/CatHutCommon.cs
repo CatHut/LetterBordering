@@ -26,5 +26,16 @@ namespace CatHut
 
             }
         }
+
+
+        public static string NormalizeNewLine(string text)
+        {
+            // CRやLFをCRLFに置換する
+            text = text.Replace("\r\n", "\n"); // CRLFをLFに置換する
+            text = text.Replace("\r", "\n"); // CRをLFに置換する
+            text = text.Replace("\n", Environment.NewLine); // LFを適切な改行コードに置換する
+
+            return text; // 置換した文字列を返す
+        }
     }
 }
