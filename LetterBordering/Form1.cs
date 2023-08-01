@@ -641,7 +641,7 @@ namespace LetterBordering
             SetTextSetListViewItems();
 
             var idx = PM.AsProject.Settings.SelectedTextIndex;
-            listView_TextSet.SelectedIndices.Add(idx);
+            //listView_TextSet.SelectedIndices.Add(idx);
 
             //âÊëúï‚ê≥
             numericUpDown_ImageWidth.Value = PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX;
@@ -702,16 +702,41 @@ namespace LetterBordering
 
         public void SetTextSetListViewItems()
         {
-            var idx = PM.AsProject.Settings.SelectedTextIndex;
+            var selectedIdxs = listView_TextSet.SelectedIndices.OfType<int>().ToList();
+            var preItemCount = listView_TextSet.Items.Count;
+            //var forcusedIdx = listView_TextSet.FocusedItem.Index;
 
             listView_TextSet.Items.Clear();
+            var i = 0;
             foreach (var temp in PM.AsProject.Settings.TextInfoDic)
             {
                 ListViewItem item = new ListViewItem();
                 item.Text = temp.Key.ToString("D4");
                 item.SubItems.Add(temp.Value.Text);
+
+                //foreach(var val in selectedIdxs)
+                //{
+                //    if(i == val) { item.Selected = true; break; }
+                //}
+
                 listView_TextSet.Items.Add(item);
+
+                i++;
             }
+
+            if (listView_TextSet.Items.Count == preItemCount)
+            {
+                foreach (var temp in selectedIdxs)
+                {
+                    listView_TextSet.SelectedIndices.Add(temp);
+                }
+            }
+            else
+            {
+                var idx = PM.AsProject.Settings.SelectedTextIndex;
+                listView_TextSet.SelectedIndices.Add(idx);
+            }
+
         }
 
 
@@ -1135,7 +1160,7 @@ namespace LetterBordering
                 foreach (ListViewItem item in deleteList)
                 {
                     PM.AsProject.Settings.TextInfoDic.Remove(item.Index);
-                    setIndex = Math.Max(item.Index - 1, 0);
+                    setIndex = Math.Max(item.Index, 0);
                 }
 
                 var tempDic = new SerializableSortedDictionary<int, TextInfo>();
