@@ -411,6 +411,53 @@ namespace LetterBordering
 
         }
 
+        private void SaveImage(int idx, List<int> idxList)
+        {
+            //基本画像作成
+            var bmp = CreateImage(idx);
+            bmp = ResizeImage(ref bmp, idx);
+
+            Rectangle? destRect = null;
+
+            //複数選択されている場合には重複描画を行う
+            foreach (var tempIdx in idxList)
+            {
+                if (idx == tempIdx) { continue; }    //自分自身は処理しない
+
+                var textInfo = PM.AsProject.Settings.TextInfoDic[tempIdx];
+                var width = textInfo.ImageSizeX;
+                var height = textInfo.ImageSizeY;
+
+                //画像サイズが一致しなければ処理しない
+                if (bmp.Width == width && bmp.Height == height)
+                {
+                    var tempImage = CreateImage(tempIdx);
+                    tempImage = ResizeImage(ref tempImage, tempIdx);
+
+                    using (Graphics tempG = Graphics.FromImage(bmp))
+                    {
+                        tempG.DrawImage(tempImage, 0, 0);
+                    }
+
+                    tempImage.Dispose();
+                }
+
+            }
+
+            var path = @"Output\" + PM.AsProject.Settings.Name;
+
+            //保存はここでする。
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            var file = path + @"\" + idx.ToString("D4") + "_overlay.png";
+            bmp.Save(file, ImageFormat.Png);
+            bmp.Dispose();
+
+        }
+
 
 
         private Size CalcOffset(Bitmap str, Bitmap bmp, int idx)
@@ -1059,7 +1106,8 @@ namespace LetterBordering
 
         private void button_Output_Click(object sender, EventArgs e)
         {
-            SaveImage(PM.AsProject.Settings.SelectedTextIndex);
+            var list = listView_TextSet.SelectedIndices.OfType<int>().ToList();
+            SaveImage(PM.AsProject.Settings.SelectedTextIndex, list);
         }
 
         private void button_OpenFolder_Click(object sender, EventArgs e)
