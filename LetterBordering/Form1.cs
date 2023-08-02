@@ -277,6 +277,8 @@ namespace LetterBordering
                     {
                         tempG.DrawImage(tempImage, 0, 0);
                     }
+
+                    tempImage.Dispose();
                 }
 
             }
@@ -351,7 +353,7 @@ namespace LetterBordering
 
                 using (Graphics tempG = Graphics.FromImage(resizeBmp))
                 {
-                    var xy = CalcOffset(bmp, resizeBmp);
+                    var xy = CalcOffset(bmp, resizeBmp, idx);
                     var src_x = 0;
                     var src_y = 0;
                     var src_w = bmp.Width;
@@ -411,10 +413,8 @@ namespace LetterBordering
 
 
 
-        private Size CalcOffset(Bitmap str, Bitmap bmp)
+        private Size CalcOffset(Bitmap str, Bitmap bmp, int idx)
         {
-
-            var idx = PM.AsProject.Settings.SelectedTextIndex;
             var textInfo = PM.AsProject.Settings.TextInfoDic[idx];
 
             var tempX = textInfo.OffsetX;
