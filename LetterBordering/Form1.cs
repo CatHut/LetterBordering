@@ -452,7 +452,12 @@ namespace LetterBordering
                 Directory.CreateDirectory(path);
             }
 
-            var file = path + @"\" + idx.ToString("D4") + "_overlay.png";
+            var file = path + @"\" + idx.ToString("D4") + ".png";
+            if(idxList.Count > 1)
+            {
+                file = path + @"\" + idx.ToString("D4") + "_overlay.png";
+            }
+
             bmp.Save(file, ImageFormat.Png);
             bmp.Dispose();
 
