@@ -941,6 +941,7 @@ namespace LetterBordering
             PrivateFontCollection collection = new PrivateFontCollection();
 
             var folder = @".\Font";
+            if (!Directory.Exists(folder)) { Directory.CreateDirectory(folder); }
 
             // フォルダ内のすべてのTTF、OTF、CFF、EOTファイルを取得
             string[] files = Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories);
@@ -973,7 +974,8 @@ namespace LetterBordering
                     var idx = PM.AsProject.Settings.SelectedTextIndex;
                     var ret = SwapDictionaryIndex(idx, true);
 
-                    if (ret) { 
+                    if (ret)
+                    {
                         PM.AsProject.Settings.SelectedTextIndex = idx - 1;
                         listView_TextSet.SelectedIndices.Clear();
                         listView_TextSet.SelectedIndices.Add(PM.AsProject.Settings.SelectedTextIndex);
@@ -999,7 +1001,7 @@ namespace LetterBordering
             if (isUp) // isUpがtrueの場合はidx-1と入れ替える
             {
                 key2 = idx - 1;
-                if (key2 < 0){ return false; } // key2が0未満の場合は処理しない
+                if (key2 < 0) { return false; } // key2が0未満の場合は処理しない
             }
             else // isUpがfalseの場合はidx+1と入れ替える
             {
@@ -1026,8 +1028,9 @@ namespace LetterBordering
                     var idx = PM.AsProject.Settings.SelectedTextIndex;
                     var ret = SwapDictionaryIndex(idx, false);
 
-                    if (ret) { 
-                        PM.AsProject.Settings.SelectedTextIndex = idx + 1; 
+                    if (ret)
+                    {
+                        PM.AsProject.Settings.SelectedTextIndex = idx + 1;
                         listView_TextSet.SelectedIndices.Clear();
                         listView_TextSet.SelectedIndices.Add(PM.AsProject.Settings.SelectedTextIndex);
                     }
@@ -1159,11 +1162,14 @@ namespace LetterBordering
             EventEnable = false;
             {
                 ColorDialog cd = new ColorDialog();
+                cd.CustomColors = PM.AsProject.Settings.CustomColors;
                 if (cd.ShowDialog() == DialogResult.OK)
                 {
                     //選択された色の取得
                     var idx = PM.AsProject.Settings.SelectedTextIndex;
                     button_Color00.BackColor = cd.Color;
+
+                    PM.AsProject.Settings.CustomColors = cd.CustomColors;
                 }
             }
             EventEnable = true;
@@ -1177,11 +1183,14 @@ namespace LetterBordering
             EventEnable = false;
             {
                 ColorDialog cd = new ColorDialog();
+                cd.CustomColors = PM.AsProject.Settings.CustomColors;
                 if (cd.ShowDialog() == DialogResult.OK)
                 {
                     //選択された色の取得
                     var idx = PM.AsProject.Settings.SelectedTextIndex;
                     button_Color01.BackColor = cd.Color;
+
+                    PM.AsProject.Settings.CustomColors = cd.CustomColors;
                 }
             }
             EventEnable = true;
@@ -1195,11 +1204,14 @@ namespace LetterBordering
             EventEnable = false;
             {
                 ColorDialog cd = new ColorDialog();
+                cd.CustomColors = PM.AsProject.Settings.CustomColors;
                 if (cd.ShowDialog() == DialogResult.OK)
                 {
                     //選択された色の取得
                     var idx = PM.AsProject.Settings.SelectedTextIndex;
                     button_Color02.BackColor = cd.Color;
+
+                    PM.AsProject.Settings.CustomColors = cd.CustomColors;
                 }
             }
             EventEnable = true;
@@ -1265,6 +1277,8 @@ namespace LetterBordering
         private void button_OpenFolder_Click(object sender, EventArgs e)
         {
             var path = @"Output\" + PM.AsProject.Settings.Name;
+            if (!Directory.Exists(path)) { Directory.CreateDirectory(path); }
+
             Process.Start("explorer.exe", path);
         }
 
@@ -1430,15 +1444,19 @@ namespace LetterBordering
             EventEnable = false;
             {
                 ColorDialog cd = new ColorDialog();
+                cd.CustomColors = PM.AsProject.Settings.CustomColors;
                 if (cd.ShowDialog() == DialogResult.OK)
                 {
                     //選択された色の取得
                     button_BackColor.BackColor = cd.Color;
                     radioButton_BackColorOther.Select();
+
+                    PM.AsProject.Settings.CustomColors = cd.CustomColors;
                 }
             }
             EventEnable = true;
             CommonUpdate();
+
         }
     }
 }

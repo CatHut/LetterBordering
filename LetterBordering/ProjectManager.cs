@@ -85,6 +85,7 @@ namespace LetterBordering
         {
 
             var folder = DATA_FOLDER;
+            if (!Directory.Exists(DATA_FOLDER)) { Directory.CreateDirectory(DATA_FOLDER); }
 
             var fileList = new HashSet<string>();
 

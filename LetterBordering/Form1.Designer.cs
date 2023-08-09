@@ -91,6 +91,8 @@
             label_StringImageSize = new Label();
             label_ImageSize = new Label();
             timer_TextChanged = new System.Windows.Forms.Timer(components);
+            label5 = new Label();
+            label6 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Preview).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -314,6 +316,8 @@
             // 
             // splitContainer3.Panel1
             // 
+            splitContainer3.Panel1.Controls.Add(label6);
+            splitContainer3.Panel1.Controls.Add(label5);
             splitContainer3.Panel1.Controls.Add(checkBox_Centering);
             splitContainer3.Panel1.Controls.Add(button_Color00);
             splitContainer3.Panel1.Controls.Add(textBox_InputText);
@@ -394,7 +398,7 @@
             // 
             // button_Color01
             // 
-            button_Color01.Location = new Point(97, 203);
+            button_Color01.Location = new Point(162, 197);
             button_Color01.Name = "button_Color01";
             button_Color01.Size = new Size(75, 23);
             button_Color01.TabIndex = 10;
@@ -404,7 +408,7 @@
             // 
             // button_Color02
             // 
-            button_Color02.Location = new Point(97, 245);
+            button_Color02.Location = new Point(162, 239);
             button_Color02.Name = "button_Color02";
             button_Color02.Size = new Size(75, 23);
             button_Color02.TabIndex = 11;
@@ -425,7 +429,7 @@
             // 
             // numericUpDown_Size01
             // 
-            numericUpDown_Size01.Location = new Point(12, 205);
+            numericUpDown_Size01.Location = new Point(81, 199);
             numericUpDown_Size01.Name = "numericUpDown_Size01";
             numericUpDown_Size01.Size = new Size(75, 23);
             numericUpDown_Size01.TabIndex = 12;
@@ -434,7 +438,7 @@
             // 
             // numericUpDown_Size02
             // 
-            numericUpDown_Size02.Location = new Point(12, 245);
+            numericUpDown_Size02.Location = new Point(81, 239);
             numericUpDown_Size02.Name = "numericUpDown_Size02";
             numericUpDown_Size02.Size = new Size(75, 23);
             numericUpDown_Size02.TabIndex = 13;
@@ -805,6 +809,24 @@
             timer_TextChanged.Interval = 50;
             timer_TextChanged.Tick += timer_TextChanged_Tick;
             // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(24, 201);
+            label5.Name = "label5";
+            label5.Size = new Size(51, 15);
+            label5.TabIndex = 31;
+            label5.Text = "縁取り１";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(24, 243);
+            label6.Name = "label6";
+            label6.Size = new Size(51, 15);
+            label6.TabIndex = 32;
+            label6.Text = "縁取り２";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -913,5 +935,7 @@
         private RadioButton radioButton_BackColorOther;
         private RadioButton radioButton_BackColorBlack;
         private RadioButton radioButton_BackColorWhite;
+        private Label label6;
+        private Label label5;
     }
 }

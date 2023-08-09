@@ -16,6 +16,7 @@ namespace LetterBordering
         public DateTime LastSave;
         public int SelectedTextIndex;
         public SerializableSortedDictionary<int, TextInfo> TextInfoDic;
+        public int[] CustomColors;
 
         public ProjectClass() 
         {
@@ -23,6 +24,7 @@ namespace LetterBordering
             Name = "New Project";
             LastSave = DateTime.Now;
             SelectedTextIndex = 0;
+            CustomColors = null;
 
             TextInfoDic = new SerializableSortedDictionary<int, TextInfo>();
 
