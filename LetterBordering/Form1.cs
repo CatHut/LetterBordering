@@ -968,18 +968,72 @@ namespace LetterBordering
             if (EventEnable == false) { return; }
             EventEnable = false;
             {
+                if (listView_TextSet.SelectedItems.Count > 0)
+                {
+                    var idx = PM.AsProject.Settings.SelectedTextIndex;
+                    var ret = SwapDictionaryIndex(idx, true);
 
+                    if (ret) { 
+                        PM.AsProject.Settings.SelectedTextIndex = idx - 1;
+                        listView_TextSet.SelectedIndices.Clear();
+                        listView_TextSet.SelectedIndices.Add(PM.AsProject.Settings.SelectedTextIndex);
+                    }
+
+
+                    UpdateUiValues();
+                }
             }
             EventEnable = true;
+        }
+
+        /// <summary>
+        /// Dictionaryのスワップ
+        /// </summary>
+        /// <param name="idx">入れ替え対象のidx</param>
+        /// <param name="isUp">true:上と入れ替える、false:下と入れ替える。</param>
+        /// <returns>true:処理実施、false:処理実施せず</returns>
+        private bool SwapDictionaryIndex(int idx, bool isUp)
+        {
+            int key1 = idx;
+            int key2;
+            if (isUp) // isUpがtrueの場合はidx-1と入れ替える
+            {
+                key2 = idx - 1;
+                if (key2 < 0){ return false; } // key2が0未満の場合は処理しない
+            }
+            else // isUpがfalseの場合はidx+1と入れ替える
+            {
+                key2 = idx + 1;
+                if (!PM.AsProject.Settings.TextInfoDic.ContainsKey(key2)) { return false; }
+            }
+
+            var temp = PM.AsProject.Settings.TextInfoDic[key1];
+            PM.AsProject.Settings.TextInfoDic[key1] = PM.AsProject.Settings.TextInfoDic[key2];
+            PM.AsProject.Settings.TextInfoDic[key2] = temp;
+
+            return true;
 
         }
+
 
         private void button_Down_Click(object sender, EventArgs e)
         {
             if (EventEnable == false) { return; }
             EventEnable = false;
             {
+                if (listView_TextSet.SelectedItems.Count > 0)
+                {
+                    var idx = PM.AsProject.Settings.SelectedTextIndex;
+                    var ret = SwapDictionaryIndex(idx, false);
 
+                    if (ret) { 
+                        PM.AsProject.Settings.SelectedTextIndex = idx + 1; 
+                        listView_TextSet.SelectedIndices.Clear();
+                        listView_TextSet.SelectedIndices.Add(PM.AsProject.Settings.SelectedTextIndex);
+                    }
+
+                    UpdateUiValues();
+                }
             }
             EventEnable = true;
 
