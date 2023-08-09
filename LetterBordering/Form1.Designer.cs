@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             pictureBox_Preview = new PictureBox();
             textBox_InputText = new TextBox();
             listView_TextSet = new ListView();
@@ -810,8 +811,9 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1184, 609);
             Controls.Add(splitContainer1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
-            Text = "LetterBordering";
+            Text = "Text Bordering";
             FormClosing += Form1_FormClosing;
             ((System.ComponentModel.ISupportInitialize)pictureBox_Preview).EndInit();
             splitContainer1.Panel1.ResumeLayout(false);
