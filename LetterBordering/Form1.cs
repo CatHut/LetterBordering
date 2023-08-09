@@ -6,6 +6,7 @@ using System.Drawing.Text;
 using CatHut;
 using System.Diagnostics;
 using static LetterBordering.TextInfo;
+using System.Windows.Forms;
 
 namespace LetterBordering
 {
@@ -244,6 +245,50 @@ namespace LetterBordering
         }
 
 
+        private void DrawBackGround(ref Bitmap bmp, int idx)
+        {
+            var textInfo = PM.AsProject.Settings.TextInfoDic[idx];
+
+            Color color;
+
+            switch (textInfo.SelectedBackColor)
+            {
+                case BACK_COLOR.WHITE:
+                    color = Color.White;
+                    break;
+                case BACK_COLOR.BLACK:
+                    color = Color.Black;
+                    break;
+                case BACK_COLOR.OTHER:
+                    color = textInfo.BackColor.ToColor();
+                    break;
+                default:
+                    color = Color.White;
+                    break;
+            }
+
+
+            Bitmap tempBitmap = new Bitmap(bmp.Width, bmp.Height);
+
+            using (Graphics tempG = Graphics.FromImage(tempBitmap))
+            {
+                using (Brush brush = new SolidBrush(color))
+                {
+                    tempG.FillRectangle(brush, 0, 0, bmp.Width, bmp.Height);
+                }
+            }
+
+            using (Graphics tempG = Graphics.FromImage(tempBitmap))
+            {
+                tempG.DrawImage(bmp, 0, 0);
+            }
+            bmp.Dispose();
+
+            bmp = tempBitmap;
+
+        }
+
+
         private void UpdateImage()
         {
             var idx = PM.AsProject.Settings.SelectedTextIndex;
@@ -257,12 +302,12 @@ namespace LetterBordering
             bmp = ResizeImage(ref bmp, idx, out destRect);
 
             //複数選択されている場合には重複描画を行う
-            foreach(var itemIdx in listView_TextSet.SelectedIndices)
+            foreach (var itemIdx in listView_TextSet.SelectedIndices)
             {
-                if(itemIdx == null) { continue; }
+                if (itemIdx == null) { continue; }
 
                 var tempIdx = (int)itemIdx;
-                if(idx == tempIdx) { continue; }    //自分自身は処理しない
+                if (idx == tempIdx) { continue; }    //自分自身は処理しない
 
                 var textInfo = PM.AsProject.Settings.TextInfoDic[tempIdx];
                 var width = textInfo.ImageSizeX;
@@ -283,10 +328,11 @@ namespace LetterBordering
 
             }
 
+            //背景色描画
+            DrawBackGround(ref bmp, idx);
 
             //サイズ表示更新
             label_ImageSize.Text = bmp.Width.ToString().PadLeft(4) + "×" + bmp.Height.ToString().PadLeft(4);
-
 
             //表示用の調整
             Graphics g = Graphics.FromImage(bmp);
@@ -453,7 +499,7 @@ namespace LetterBordering
             }
 
             var file = path + @"\" + idx.ToString("D4") + ".png";
-            if(idxList.Count > 1)
+            if (idxList.Count > 1)
             {
                 file = path + @"\" + idx.ToString("D4") + "_overlay.png";
             }
@@ -546,39 +592,38 @@ namespace LetterBordering
 
             var idx = PM.AsProject.Settings.SelectedTextIndex;
 
-            var textInfo = PM.AsProject.Settings.TextInfoDic[idx];
-            PM.AsProject.Settings.TextInfoDic[idx] = new TextInfo();
-            PM.AsProject.Settings.TextInfoDic[idx].Text = textBox_InputText.Text;
-            PM.AsProject.Settings.TextInfoDic[idx].FontName = comboBox_Font.Text;
-            PM.AsProject.Settings.TextInfoDic[idx].FontSize = (int)numericUpDown_FontSize.Value;
-            PM.AsProject.Settings.TextInfoDic[idx].Bold = checkBox_Bold.Checked;
-            PM.AsProject.Settings.TextInfoDic[idx].Italic = checkBox_Italic.Checked;
-            PM.AsProject.Settings.TextInfoDic[idx].Centering = checkBox_Centering.Checked;
-            PM.AsProject.Settings.TextInfoDic[idx].BaseColor = new SerializableColor(button_Color00.BackColor);
+            var textInfo = new TextInfo();
+            textInfo.Text = textBox_InputText.Text;
+            textInfo.FontName = comboBox_Font.Text;
+            textInfo.FontSize = (int)numericUpDown_FontSize.Value;
+            textInfo.Bold = checkBox_Bold.Checked;
+            textInfo.Italic = checkBox_Italic.Checked;
+            textInfo.Centering = checkBox_Centering.Checked;
+            textInfo.BaseColor = new SerializableColor(button_Color00.BackColor);
 
-            PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX = (int)numericUpDown_ImageWidth.Value;
-            PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY = (int)numericUpDown_ImageHeight.Value;
+            textInfo.ImageSizeX = (int)numericUpDown_ImageWidth.Value;
+            textInfo.ImageSizeY = (int)numericUpDown_ImageHeight.Value;
 
 
-            PM.AsProject.Settings.TextInfoDic[idx].ResolutionIndex = (RESOLUTION_INDEX)comboBox_Resolution.SelectedIndex;
-            PM.AsProject.Settings.TextInfoDic[idx].OffsetX = (int)numericUpDown_OffsetX.Value;
-            PM.AsProject.Settings.TextInfoDic[idx].OffsetY = (int)numericUpDown_OffsetY.Value;
+            textInfo.ResolutionIndex = (RESOLUTION_INDEX)comboBox_Resolution.SelectedIndex;
+            textInfo.OffsetX = (int)numericUpDown_OffsetX.Value;
+            textInfo.OffsetY = (int)numericUpDown_OffsetY.Value;
 
             foreach (RadioButton rb in panel_BasePointX.Controls)
             {
                 switch (rb.Tag)
                 {
                     case "LEFT":
-                        if (rb.Checked) { PM.AsProject.Settings.TextInfoDic[idx].BasePointX = TextInfo.BASE_POINT_X.LEFT; }
+                        if (rb.Checked) { textInfo.BasePointX = TextInfo.BASE_POINT_X.LEFT; }
                         break;
                     case "CENTER":
-                        if (rb.Checked) { PM.AsProject.Settings.TextInfoDic[idx].BasePointX = TextInfo.BASE_POINT_X.CENTER; }
+                        if (rb.Checked) { textInfo.BasePointX = TextInfo.BASE_POINT_X.CENTER; }
                         break;
                     case "RIGHT":
-                        if (rb.Checked) { PM.AsProject.Settings.TextInfoDic[idx].BasePointX = TextInfo.BASE_POINT_X.RIGHT; }
+                        if (rb.Checked) { textInfo.BasePointX = TextInfo.BASE_POINT_X.RIGHT; }
                         break;
                     default:
-                        PM.AsProject.Settings.TextInfoDic[idx].BasePointX = TextInfo.BASE_POINT_X.CENTER;
+                        textInfo.BasePointX = TextInfo.BASE_POINT_X.CENTER;
                         break;
                 }
             }
@@ -588,69 +633,69 @@ namespace LetterBordering
                 switch (rb.Tag)
                 {
                     case "TOP":
-                        if (rb.Checked) { PM.AsProject.Settings.TextInfoDic[idx].BasePointY = TextInfo.BASE_POINT_Y.TOP; }
+                        if (rb.Checked) { textInfo.BasePointY = TextInfo.BASE_POINT_Y.TOP; }
                         break;
                     case "CENTER":
-                        if (rb.Checked) { PM.AsProject.Settings.TextInfoDic[idx].BasePointY = TextInfo.BASE_POINT_Y.CENTER; }
+                        if (rb.Checked) { textInfo.BasePointY = TextInfo.BASE_POINT_Y.CENTER; }
                         break;
                     case "BOTTOM":
-                        if (rb.Checked) { PM.AsProject.Settings.TextInfoDic[idx].BasePointY = TextInfo.BASE_POINT_Y.BOTTOM; }
+                        if (rb.Checked) { textInfo.BasePointY = TextInfo.BASE_POINT_Y.BOTTOM; }
                         break;
                     default:
-                        PM.AsProject.Settings.TextInfoDic[idx].BasePointY = TextInfo.BASE_POINT_Y.TOP;
+                        textInfo.BasePointY = TextInfo.BASE_POINT_Y.TOP;
                         break;
                 }
             }
 
-            PM.AsProject.Settings.TextInfoDic[idx].AutoCenterX = checkBox_AutoCenterX.Checked;
-            PM.AsProject.Settings.TextInfoDic[idx].AutoCenterY = checkBox_AutoCenterY.Checked;
+            textInfo.AutoCenterX = checkBox_AutoCenterX.Checked;
+            textInfo.AutoCenterY = checkBox_AutoCenterY.Checked;
 
-            PM.AsProject.Settings.TextInfoDic[idx].ResolutionIndex = (RESOLUTION_INDEX)comboBox_Resolution.SelectedIndex;
-            switch (PM.AsProject.Settings.TextInfoDic[idx].ResolutionIndex)
+            textInfo.ResolutionIndex = (RESOLUTION_INDEX)comboBox_Resolution.SelectedIndex;
+            switch (textInfo.ResolutionIndex)
             {
                 case RESOLUTION_INDEX.NONE:
-                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.NONE].Width;
-                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.NONE].Height;
+                    textInfo.ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.NONE].Width;
+                    textInfo.ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.NONE].Height;
                     break;
                 case RESOLUTION_INDEX.MANUAL:
                     //なにもしない
                     break;
                 case RESOLUTION_INDEX.VGA:
-                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.VGA].Width;
-                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.VGA].Height;
+                    textInfo.ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.VGA].Width;
+                    textInfo.ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.VGA].Height;
                     break;
                 case RESOLUTION_INDEX.SDTB:
-                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.SDTB].Width;
-                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.SDTB].Height;
+                    textInfo.ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.SDTB].Width;
+                    textInfo.ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.SDTB].Height;
                     break;
                 case RESOLUTION_INDEX.HDTV:
-                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.HDTV].Width;
-                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.HDTV].Height;
+                    textInfo.ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.HDTV].Width;
+                    textInfo.ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.HDTV].Height;
                     break;
                 case RESOLUTION_INDEX.FHD_2K:
-                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.FHD_2K].Width;
-                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.FHD_2K].Height;
+                    textInfo.ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.FHD_2K].Width;
+                    textInfo.ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.FHD_2K].Height;
                     break;
                 case RESOLUTION_INDEX.WQHD:
-                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.WQHD].Width;
-                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.WQHD].Height;
+                    textInfo.ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.WQHD].Width;
+                    textInfo.ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.WQHD].Height;
                     break;
                 case RESOLUTION_INDEX.UHD_4K:
-                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.UHD_4K].Width;
-                    PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.UHD_4K].Height;
+                    textInfo.ImageSizeX = ImageCommon.ResolutionDic[RESOLUTION_INDEX.UHD_4K].Width;
+                    textInfo.ImageSizeY = ImageCommon.ResolutionDic[RESOLUTION_INDEX.UHD_4K].Height;
                     break;
             }
 
 
-            PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0] = new DecorationInfo();
-            PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0].Thick = (int)numericUpDown_Size01.Value; //縁取り１太さ
-            PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0].Color = new SerializableColor(button_Color01.BackColor); //縁取り１色
+            textInfo.DecorationDic[0] = new DecorationInfo();
+            textInfo.DecorationDic[0].Thick = (int)numericUpDown_Size01.Value; //縁取り１太さ
+            textInfo.DecorationDic[0].Color = new SerializableColor(button_Color01.BackColor); //縁取り１色
 
-            PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[1] = new DecorationInfo();
-            PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[1].Thick = (int)numericUpDown_Size02.Value; //縁取り２太さ
-            PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[1].Color = new SerializableColor(button_Color02.BackColor); //縁取り２色
+            textInfo.DecorationDic[1] = new DecorationInfo();
+            textInfo.DecorationDic[1].Thick = (int)numericUpDown_Size02.Value; //縁取り２太さ
+            textInfo.DecorationDic[1].Color = new SerializableColor(button_Color02.BackColor); //縁取り２色
 
-            if (PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX != 0 && PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY != 0)
+            if (textInfo.ImageSizeX != 0 && textInfo.ImageSizeY != 0)
             {
                 EnableOffsetControls(idx, true);
             }
@@ -658,6 +703,37 @@ namespace LetterBordering
             {
                 EnableOffsetControls(idx, false);
             }
+
+
+            foreach (Control ctrl in groupBox_BackColor.Controls)
+            {
+                // コントロールがRadioButtonかどうかを判定する
+                if (ctrl is RadioButton)
+                {
+                    // ラジオボタンの場合の処理
+                    RadioButton rb = ctrl as RadioButton; // as演算子で型変換する
+                    switch (rb.Tag)
+                    {
+                        case "WHITE":
+                            if (rb.Checked) { textInfo.SelectedBackColor = TextInfo.BACK_COLOR.WHITE; }
+                            break;
+                        case "BLACK":
+                            if (rb.Checked) { textInfo.SelectedBackColor = TextInfo.BACK_COLOR.BLACK; }
+                            break;
+                        case "OTHER":
+                            if (rb.Checked) { textInfo.SelectedBackColor = TextInfo.BACK_COLOR.OTHER; }
+                            break;
+                        default:
+                            textInfo.SelectedBackColor = TextInfo.BACK_COLOR.WHITE;
+                            break;
+                    }
+
+                }
+            }
+
+            textInfo.BackColor = new SerializableColor(button_BackColor.BackColor); //サンプル背景色
+
+            PM.AsProject.Settings.TextInfoDic[idx] = textInfo;
 
             PM.AsProject.SaveData();
         }
@@ -699,15 +775,16 @@ namespace LetterBordering
             SetTextSetListViewItems();
 
             var idx = PM.AsProject.Settings.SelectedTextIndex;
+            var textInfo = PM.AsProject.Settings.TextInfoDic[idx];
             //listView_TextSet.SelectedIndices.Add(idx);
 
             //画像補正
-            numericUpDown_ImageWidth.Value = PM.AsProject.Settings.TextInfoDic[idx].ImageSizeX;
-            numericUpDown_ImageHeight.Value = PM.AsProject.Settings.TextInfoDic[idx].ImageSizeY;
-            numericUpDown_OffsetX.Value = PM.AsProject.Settings.TextInfoDic[idx].OffsetX;
-            numericUpDown_OffsetY.Value = PM.AsProject.Settings.TextInfoDic[idx].OffsetY;
+            numericUpDown_ImageWidth.Value = textInfo.ImageSizeX;
+            numericUpDown_ImageHeight.Value = textInfo.ImageSizeY;
+            numericUpDown_OffsetX.Value = textInfo.OffsetX;
+            numericUpDown_OffsetY.Value = textInfo.OffsetY;
 
-            switch (PM.AsProject.Settings.TextInfoDic[idx].BasePointX)
+            switch (textInfo.BasePointX)
             {
                 case TextInfo.BASE_POINT_X.LEFT:
                     radioButton_LeftBase.Checked = true;
@@ -720,7 +797,7 @@ namespace LetterBordering
                     break;
             }
 
-            switch (PM.AsProject.Settings.TextInfoDic[idx].BasePointY)
+            switch (textInfo.BasePointY)
             {
                 case TextInfo.BASE_POINT_Y.TOP:
                     radioButton_TopBase.Checked = true;
@@ -733,28 +810,44 @@ namespace LetterBordering
                     break;
             }
 
-            checkBox_AutoCenterX.Checked = PM.AsProject.Settings.TextInfoDic[idx].AutoCenterX;
-            checkBox_AutoCenterY.Checked = PM.AsProject.Settings.TextInfoDic[idx].AutoCenterY;
-            comboBox_Resolution.SelectedIndex = (int)PM.AsProject.Settings.TextInfoDic[idx].ResolutionIndex;
+            checkBox_AutoCenterX.Checked = textInfo.AutoCenterX;
+            checkBox_AutoCenterY.Checked = textInfo.AutoCenterY;
+            comboBox_Resolution.SelectedIndex = (int)textInfo.ResolutionIndex;
 
-            comboBox_Font.Text = PM.AsProject.Settings.TextInfoDic[idx].FontName;
-            numericUpDown_FontSize.Value = PM.AsProject.Settings.TextInfoDic[idx].FontSize;
-            checkBox_Bold.Checked = PM.AsProject.Settings.TextInfoDic[idx].Bold;
-            checkBox_Italic.Checked = PM.AsProject.Settings.TextInfoDic[idx].Italic;
-            checkBox_Centering.Checked = PM.AsProject.Settings.TextInfoDic[idx].Centering;
+            comboBox_Font.Text = textInfo.FontName;
+            numericUpDown_FontSize.Value = textInfo.FontSize;
+            checkBox_Bold.Checked = textInfo.Bold;
+            checkBox_Italic.Checked = textInfo.Italic;
+            checkBox_Centering.Checked = textInfo.Centering;
 
-            textBox_InputText.Text = CatHutCommon.NormalizeNewLine(PM.AsProject.Settings.TextInfoDic[idx].Text);
+            textBox_InputText.Text = CatHutCommon.NormalizeNewLine(textInfo.Text);
 
             //装飾
-            numericUpDown_Size01.Value = PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0].Thick;
-            numericUpDown_Size02.Value = PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[1].Thick;
+            numericUpDown_Size01.Value = textInfo.DecorationDic[0].Thick;
+            numericUpDown_Size02.Value = textInfo.DecorationDic[1].Thick;
 
             //ボタンカラー設定
-            button_Color00.BackColor = PM.AsProject.Settings.TextInfoDic[idx].BaseColor.ToColor();
-            button_Color01.BackColor = PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[0].Color.ToColor();
-            button_Color02.BackColor = PM.AsProject.Settings.TextInfoDic[idx].DecorationDic[1].Color.ToColor();
+            button_Color00.BackColor = textInfo.BaseColor.ToColor();
+            button_Color01.BackColor = textInfo.DecorationDic[0].Color.ToColor();
+            button_Color02.BackColor = textInfo.DecorationDic[1].Color.ToColor();
 
-
+            //背景カラー設定
+            switch (textInfo.SelectedBackColor)
+            {
+                case BACK_COLOR.WHITE:
+                    radioButton_BackColorWhite.Checked = true;
+                    break;
+                case BACK_COLOR.BLACK:
+                    radioButton_BackColorBlack.Checked = true;
+                    break;
+                case BACK_COLOR.OTHER:
+                    radioButton_BackColorOther.Checked = true;
+                    break;
+                default:
+                    radioButton_BackColorWhite.Checked = true;
+                    break;
+            }
+            button_BackColor.BackColor = textInfo.BackColor.ToColor();
 
         }
 
@@ -1257,6 +1350,41 @@ namespace LetterBordering
 
             CommonUpdate();
 
+        }
+
+        private void radioButton_BackColorWhite_CheckedChanged(object sender, EventArgs e)
+        {
+            CommonUpdate();
+
+        }
+
+        private void radioButton_BackColorBlack_CheckedChanged(object sender, EventArgs e)
+        {
+            CommonUpdate();
+
+        }
+
+        private void radioButton_BackColorOther_CheckedChanged(object sender, EventArgs e)
+        {
+            CommonUpdate();
+
+        }
+
+        private void button_BackColor_Click(object sender, EventArgs e)
+        {
+            if (EventEnable == false) { return; }
+            EventEnable = false;
+            {
+                ColorDialog cd = new ColorDialog();
+                if (cd.ShowDialog() == DialogResult.OK)
+                {
+                    //選択された色の取得
+                    button_BackColor.BackColor = cd.Color;
+                    radioButton_BackColorOther.Select();
+                }
+            }
+            EventEnable = true;
+            CommonUpdate();
         }
     }
 }

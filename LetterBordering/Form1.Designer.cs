@@ -57,6 +57,11 @@
             numericUpDown_FontSize = new NumericUpDown();
             numericUpDown_Size01 = new NumericUpDown();
             numericUpDown_Size02 = new NumericUpDown();
+            groupBox_BackColor = new GroupBox();
+            button_BackColor = new Button();
+            radioButton_BackColorOther = new RadioButton();
+            radioButton_BackColorBlack = new RadioButton();
+            radioButton_BackColorWhite = new RadioButton();
             label4 = new Label();
             groupBox_ImageSize = new GroupBox();
             comboBox_Resolution = new ComboBox();
@@ -101,6 +106,7 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown_FontSize).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_Size01).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_Size02).BeginInit();
+            groupBox_BackColor.SuspendLayout();
             groupBox_ImageSize.SuspendLayout();
             groupBox_Offset.SuspendLayout();
             groupBox_BasePoint.SuspendLayout();
@@ -321,6 +327,7 @@
             // 
             // splitContainer3.Panel2
             // 
+            splitContainer3.Panel2.Controls.Add(groupBox_BackColor);
             splitContainer3.Panel2.Controls.Add(label4);
             splitContainer3.Panel2.Controls.Add(groupBox_ImageSize);
             splitContainer3.Panel2.Controls.Add(pictureBox_Preview);
@@ -432,6 +439,68 @@
             numericUpDown_Size02.TabIndex = 13;
             numericUpDown_Size02.Value = new decimal(new int[] { 10, 0, 0, 0 });
             numericUpDown_Size02.ValueChanged += numericUpDown_Size02_ValueChanged;
+            // 
+            // groupBox_BackColor
+            // 
+            groupBox_BackColor.Controls.Add(button_BackColor);
+            groupBox_BackColor.Controls.Add(radioButton_BackColorOther);
+            groupBox_BackColor.Controls.Add(radioButton_BackColorBlack);
+            groupBox_BackColor.Controls.Add(radioButton_BackColorWhite);
+            groupBox_BackColor.Location = new Point(262, 17);
+            groupBox_BackColor.Name = "groupBox_BackColor";
+            groupBox_BackColor.Size = new Size(228, 49);
+            groupBox_BackColor.TabIndex = 30;
+            groupBox_BackColor.TabStop = false;
+            groupBox_BackColor.Text = "サンプル背景色";
+            // 
+            // button_BackColor
+            // 
+            button_BackColor.Location = new Point(163, 20);
+            button_BackColor.Name = "button_BackColor";
+            button_BackColor.Size = new Size(51, 23);
+            button_BackColor.TabIndex = 31;
+            button_BackColor.Text = "色変更";
+            button_BackColor.UseVisualStyleBackColor = true;
+            button_BackColor.Click += button_BackColor_Click;
+            // 
+            // radioButton_BackColorOther
+            // 
+            radioButton_BackColorOther.AutoSize = true;
+            radioButton_BackColorOther.Location = new Point(101, 22);
+            radioButton_BackColorOther.Name = "radioButton_BackColorOther";
+            radioButton_BackColorOther.Size = new Size(56, 19);
+            radioButton_BackColorOther.TabIndex = 31;
+            radioButton_BackColorOther.TabStop = true;
+            radioButton_BackColorOther.Tag = "OTHER";
+            radioButton_BackColorOther.Text = "その他";
+            radioButton_BackColorOther.UseVisualStyleBackColor = true;
+            radioButton_BackColorOther.CheckedChanged += radioButton_BackColorOther_CheckedChanged;
+            // 
+            // radioButton_BackColorBlack
+            // 
+            radioButton_BackColorBlack.AutoSize = true;
+            radioButton_BackColorBlack.Location = new Point(58, 22);
+            radioButton_BackColorBlack.Name = "radioButton_BackColorBlack";
+            radioButton_BackColorBlack.Size = new Size(37, 19);
+            radioButton_BackColorBlack.TabIndex = 30;
+            radioButton_BackColorBlack.TabStop = true;
+            radioButton_BackColorBlack.Tag = "BLACK";
+            radioButton_BackColorBlack.Text = "黒";
+            radioButton_BackColorBlack.UseVisualStyleBackColor = true;
+            radioButton_BackColorBlack.CheckedChanged += radioButton_BackColorBlack_CheckedChanged;
+            // 
+            // radioButton_BackColorWhite
+            // 
+            radioButton_BackColorWhite.AutoSize = true;
+            radioButton_BackColorWhite.Location = new Point(15, 22);
+            radioButton_BackColorWhite.Name = "radioButton_BackColorWhite";
+            radioButton_BackColorWhite.Size = new Size(37, 19);
+            radioButton_BackColorWhite.TabIndex = 29;
+            radioButton_BackColorWhite.TabStop = true;
+            radioButton_BackColorWhite.Tag = "WHITE";
+            radioButton_BackColorWhite.Text = "白";
+            radioButton_BackColorWhite.UseVisualStyleBackColor = true;
+            radioButton_BackColorWhite.CheckedChanged += radioButton_BackColorWhite_CheckedChanged;
             // 
             // label4
             // 
@@ -762,6 +831,8 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown_FontSize).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_Size01).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_Size02).EndInit();
+            groupBox_BackColor.ResumeLayout(false);
+            groupBox_BackColor.PerformLayout();
             groupBox_ImageSize.ResumeLayout(false);
             groupBox_ImageSize.PerformLayout();
             groupBox_Offset.ResumeLayout(false);
@@ -835,5 +906,10 @@
         private RadioButton radioButton_CenterBaseX;
         private GroupBox groupBox_BasePoint;
         private Button button_Copy;
+        private GroupBox groupBox_BackColor;
+        private Button button_BackColor;
+        private RadioButton radioButton_BackColorOther;
+        private RadioButton radioButton_BackColorBlack;
+        private RadioButton radioButton_BackColorWhite;
     }
 }

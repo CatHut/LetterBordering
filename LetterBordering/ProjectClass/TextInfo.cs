@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CatHut;
+using static LetterBordering.TextInfo;
 
 namespace LetterBordering
 {
@@ -23,6 +24,13 @@ namespace LetterBordering
             BOTTOM
         }
 
+        public enum BACK_COLOR
+        {
+            WHITE,
+            BLACK,
+            OTHER
+        }
+
         public enum RESOLUTION_INDEX
         {
             NONE,       //なし
@@ -35,6 +43,9 @@ namespace LetterBordering
             UHD_4K,         //4K/UHD	3840×2160
         }
 
+        //表示サンプル設定
+        public BACK_COLOR SelectedBackColor;
+        public SerializableColor BackColor;
 
         //画像補正情報
         public RESOLUTION_INDEX ResolutionIndex;
@@ -46,6 +57,7 @@ namespace LetterBordering
         public BASE_POINT_Y BasePointY;
         public bool AutoCenterX;
         public bool AutoCenterY;
+
 
         //
         public string FontName;
@@ -60,6 +72,9 @@ namespace LetterBordering
         public SerializableSortedDictionary<int, DecorationInfo> DecorationDic;
 
         public TextInfo() {
+            SelectedBackColor = BACK_COLOR.WHITE;
+            BackColor = new SerializableColor(System.Drawing.Color.White);
+
             ResolutionIndex = RESOLUTION_INDEX.NONE;
             ImageSizeX = 0;
             ImageSizeY = 0;
