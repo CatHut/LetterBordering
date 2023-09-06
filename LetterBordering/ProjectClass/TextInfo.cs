@@ -64,6 +64,7 @@ namespace LetterBordering
         public int FontSize;
         public bool Bold;
         public bool Italic;
+        public bool DirectionVirtical;
         public SerializableColor BaseColor;
         public bool Centering;
         public string Text;
@@ -93,6 +94,7 @@ namespace LetterBordering
             Bold = false;
             Italic = false;
             Centering = false;
+            DirectionVirtical = false;
 
             DecorationDic = new SerializableSortedDictionary<int, DecorationInfo>();
             //DecorationDic[0] = new DecorationInfo();

@@ -48,6 +48,9 @@
             button_Up = new Button();
             button_Down = new Button();
             splitContainer3 = new SplitContainer();
+            checkBox_DirectionVirtical = new CheckBox();
+            label6 = new Label();
+            label5 = new Label();
             checkBox_Centering = new CheckBox();
             button_Color00 = new Button();
             comboBox_Font = new ComboBox();
@@ -91,8 +94,6 @@
             label_StringImageSize = new Label();
             label_ImageSize = new Label();
             timer_TextChanged = new System.Windows.Forms.Timer(components);
-            label5 = new Label();
-            label6 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Preview).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -316,6 +317,7 @@
             // 
             // splitContainer3.Panel1
             // 
+            splitContainer3.Panel1.Controls.Add(checkBox_DirectionVirtical);
             splitContainer3.Panel1.Controls.Add(label6);
             splitContainer3.Panel1.Controls.Add(label5);
             splitContainer3.Panel1.Controls.Add(checkBox_Centering);
@@ -342,6 +344,35 @@
             splitContainer3.Size = new Size(980, 544);
             splitContainer3.SplitterDistance = 480;
             splitContainer3.TabIndex = 31;
+            // 
+            // checkBox_DirectionVirtical
+            // 
+            checkBox_DirectionVirtical.AutoSize = true;
+            checkBox_DirectionVirtical.Location = new Point(205, 47);
+            checkBox_DirectionVirtical.Name = "checkBox_DirectionVirtical";
+            checkBox_DirectionVirtical.Size = new Size(59, 19);
+            checkBox_DirectionVirtical.TabIndex = 33;
+            checkBox_DirectionVirtical.Text = "縦書き";
+            checkBox_DirectionVirtical.UseVisualStyleBackColor = true;
+            checkBox_DirectionVirtical.CheckedChanged += checkBox_DirectionVirtical_CheckedChanged;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(24, 243);
+            label6.Name = "label6";
+            label6.Size = new Size(51, 15);
+            label6.TabIndex = 32;
+            label6.Text = "縁取り２";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(24, 201);
+            label5.Name = "label5";
+            label5.Size = new Size(51, 15);
+            label5.TabIndex = 31;
+            label5.Text = "縁取り１";
             // 
             // checkBox_Centering
             // 
@@ -809,24 +840,6 @@
             timer_TextChanged.Interval = 50;
             timer_TextChanged.Tick += timer_TextChanged_Tick;
             // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(24, 201);
-            label5.Name = "label5";
-            label5.Size = new Size(51, 15);
-            label5.TabIndex = 31;
-            label5.Text = "縁取り１";
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Location = new Point(24, 243);
-            label6.Name = "label6";
-            label6.Size = new Size(51, 15);
-            label6.TabIndex = 32;
-            label6.Text = "縁取り２";
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -937,5 +950,6 @@
         private RadioButton radioButton_BackColorWhite;
         private Label label6;
         private Label label5;
+        private CheckBox checkBox_DirectionVirtical;
     }
 }

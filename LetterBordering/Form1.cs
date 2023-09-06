@@ -142,7 +142,14 @@ namespace LetterBordering
 
 
             // テキストのサイズを計算する
-            Size textSize = ImageCommon.MeasureString(text, font);
+            StringFormat tempSf = new StringFormat();
+            if (textInfo.DirectionVirtical)
+            {
+                tempSf.FormatFlags |= StringFormatFlags.DirectionVertical;
+            }
+
+            Size textSize = ImageCommon.MeasureString(text, font, tempSf);
+
 
             // 画像のサイズを決める（余白を含む）
             int margin = 10 + outline1Width + outline2Width;
@@ -178,6 +185,10 @@ namespace LetterBordering
                 sf.Alignment = StringAlignment.Center;
                 sf.LineAlignment = StringAlignment.Center;
                 point = new Point(width / 2, height / 2);
+            }
+            if (textInfo.DirectionVirtical)
+            {
+                sf.FormatFlags |= StringFormatFlags.DirectionVertical;
             }
 
             path.AddString(text, font.FontFamily, (int)font.Style, font.Size, point, sf);
@@ -599,6 +610,7 @@ namespace LetterBordering
             textInfo.Bold = checkBox_Bold.Checked;
             textInfo.Italic = checkBox_Italic.Checked;
             textInfo.Centering = checkBox_Centering.Checked;
+            textInfo.DirectionVirtical = checkBox_DirectionVirtical.Checked;
             textInfo.BaseColor = new SerializableColor(button_Color00.BackColor);
 
             textInfo.ImageSizeX = (int)numericUpDown_ImageWidth.Value;
@@ -819,6 +831,7 @@ namespace LetterBordering
             checkBox_Bold.Checked = textInfo.Bold;
             checkBox_Italic.Checked = textInfo.Italic;
             checkBox_Centering.Checked = textInfo.Centering;
+            checkBox_DirectionVirtical.Checked = textInfo.DirectionVirtical;
 
             textBox_InputText.Text = CatHutCommon.NormalizeNewLine(textInfo.Text);
 
@@ -1457,6 +1470,11 @@ namespace LetterBordering
             EventEnable = true;
             CommonUpdate();
 
+        }
+
+        private void checkBox_DirectionVirtical_CheckedChanged(object sender, EventArgs e)
+        {
+            CommonUpdate();
         }
     }
 }

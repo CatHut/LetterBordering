@@ -39,6 +39,20 @@ namespace CatHut
         }
 
 
+        public static Size MeasureString(string text, Font font, StringFormat sf)
+        {
+            // 仮のサイズを計測
+            Bitmap image = new Bitmap(1, 1);
+            Graphics tempG = Graphics.FromImage(image);
+            SizeF size = tempG.MeasureString(text, font, int.MaxValue, sf);
+            tempG.Dispose();
+            image.Dispose();
+
+            Size resultSize = new Size((int)Math.Ceiling(size.Width), (int)Math.Ceiling(size.Height));
+
+            return resultSize;
+        }
+
         public static Bitmap MarginRemoveB(Bitmap img, int alpha)
         {
             // 余白を検出するための最小値
