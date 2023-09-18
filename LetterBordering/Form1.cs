@@ -7,6 +7,7 @@ using CatHut;
 using System.Diagnostics;
 using static LetterBordering.TextInfo;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace LetterBordering
 {
@@ -786,6 +787,7 @@ namespace LetterBordering
             comboBox_Project.Text = PM.AsProject.Settings.Name;
             SetTextSetListViewItems();
 
+
             var idx = PM.AsProject.Settings.SelectedTextIndex;
             var textInfo = PM.AsProject.Settings.TextInfoDic[idx];
             //listView_TextSet.SelectedIndices.Add(idx);
@@ -868,7 +870,20 @@ namespace LetterBordering
         {
             var selectedIdxs = listView_TextSet.SelectedIndices.OfType<int>().ToList();
             var preItemCount = listView_TextSet.Items.Count;
+            var lastIdx = 0;
             //var forcusedIdx = listView_TextSet.FocusedItem.Index;
+
+            if (listView_TextSet.SelectedIndices.Count > 0)
+            {
+                foreach(ListViewItem item in listView_TextSet.Items)
+                {
+                    if(item.Focused == true)
+                    {
+                        lastIdx = item.Index;
+                    }
+                }
+            }
+
 
             listView_TextSet.Items.Clear();
             var i = 0;
@@ -893,6 +908,7 @@ namespace LetterBordering
                 foreach (var temp in selectedIdxs)
                 {
                     listView_TextSet.SelectedIndices.Add(temp);
+                    //lastIdx = temp;
                 }
             }
             else
@@ -901,6 +917,7 @@ namespace LetterBordering
                 listView_TextSet.SelectedIndices.Add(idx);
             }
 
+            listView_TextSet.EnsureVisible(lastIdx);
         }
 
 
